@@ -86,11 +86,5 @@ survivor.lm.2 <- glm(Attitude ~ poc * div_rules + age_adj + gender + season, dat
 summary(survivor.lm.2)
 ```
 
-```{r}
-# age adjusted model
-survivor.lm.2 <- glm(Attitude ~ poc * div_rules + age_adj + gender + season, data = survivor, family = "binomial")
-summary(survivor.lm.2)
-```
-
 
 Do we want a model with race? We are not interested in breaking down by race, only POC status, but it seems sensible to have a model that measures how Attitude is explained by race status and whether the Div_Rules were there, with the interaction term, as well as age and gender. This measures how the presence of div_rules interacts with the relationship between being different races.
