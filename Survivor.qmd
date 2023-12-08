@@ -13,6 +13,7 @@ library(tidyverse)
 library(AMR)
 survivor <- read_csv('eval.csv')
 survivor <- survivor[-106, ]
+survivor$age_adj <- survivor$age - 18
 ```
 
 ```{r}
