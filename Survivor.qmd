@@ -1,0 +1,88 @@
+---
+title: "Final Project"
+format: pdf
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+```{r}
+library(tidyverse)
+library(AMR)
+survivor <- read_csv('eval.csv')
+survivor <- survivor[-106, ]
+```
+```{r}
+ggplot(data = survivor, mapping = aes(x = age)) + geom_boxplot()
+# Janet Carbin, Heather Aldret, Mike Turner, and Mike Gabler are the old players
+IQR(survivor$age)
+quantile(survivor$age, p = 0.25)
+quantile(survivor$age, p = 0.75)
+```
+
+
+```{r}
+# being poc, negative attitude, b4
+length(which(survivor$poc == "POC" & survivor$Attitude == 0 & survivor$season %in% c(36, 37, 38, 39, 40)))
+# being poc, positive attitude, b4
+length(which(survivor$poc == "POC" & survivor$Attitude == 1 & survivor$season %in% c(36, 37, 38, 39, 40)))
+# being non-poc, negative attitude, b4
+length(which(survivor$poc != "POC" & survivor$Attitude == 0 & survivor$season %in% c(36, 37, 38, 39, 40)))
+length(which(survivor$poc != "POC" & survivor$Attitude == 1 & survivor$season %in% c(36, 37, 38, 39, 40)))
+length(which(survivor$poc == "POC" & survivor$Attitude == 0 & survivor$season %in% c(41, 42, 43, 44, 45)))
+length(which(survivor$poc == "POC" & survivor$Attitude == 1 & survivor$season %in% c(41, 42, 43, 44, 45)))
+length(which(survivor$poc != "POC" & survivor$Attitude == 0 & survivor$season %in% c(41, 42, 43, 44, 45)))
+length(which(survivor$poc != "POC" & survivor$Attitude == 1 & survivor$season %in% c(41, 42, 43, 44, 45)))
+# effect size = odds ratio = ad/bc. 11 out of 32 (96 players overall) POC players had positive attitude before. 11 out of 52 (89 players overall) POC players had positive attitude after
+(11*41) / (11 * 21)
+# 95% CI for odds ratio of odds of negative pre v. odds of negative post for POC = 0.727 to 5.241
+
+```
+
+```{r}
+ggplot(data = survivor, 
+       mapping = aes(x = as.factor(Attitude),
+                     fill = as.factor(poc) )) +
+  geom_bar() +
+  facet_wrap(~div_rules) + 
+  labs(title = "Initial Attitudes of POC and White Players Pre- and Post- Implementation of Diversity Casting Rules on CBS's Survivor",
+         fill = "POC Status"
+       ) +
+  scale_fill_discrete(labels = c("White", "POC")) +
+  scale_x_discrete(labels=c("Negative", "Positive")) +
+  xlab("Attitude") +
+  ylab("Count")
+
+# summary table 
+survivor |>
+  group_by(div_rules) |>
+  summarize(mean_compound_score = mean(`Compound Score`),
+            mean_age = mean(age),
+            number_of_players = n())
+```
+
+```{r}
+emplogitplot1(Attitude ~ age, data = survivor, ngroups = 10)
+emplogitplot1(Attitude ~ season, data = survivor, ngroups = 10)
+```
+
+We want the following models:
+
+Model that measures how Attitude is explained by POC status and whether the Div_Rules were there, with the interaction term. This interaction term measures how the presence of div_rules interacts with the relationship between being poc and having a positive attitude.
+
+Model that measures how Attitude is explained by POC status and whether the Div_Rules were there, with the interaction term, as well as age. This measures how the presence of div_rules interacts with the relationship between being poc and having a positive attitude after accounting for age.
+
+Model that measures how Attitude is explained by POC status and whether the Div_Rules were there, with the interaction term, as well as age and gender. This measures how the presence of div_rules interacts with the relationship between being poc and having a positive attitude after accounting for age and gender.
+
+```{r}
+survivor$season <- as.factor(survivor$season)
+survivor.lm <- glm(Attitude ~ poc * div_rules + season, data = survivor, family = "binomial")
+summary(survivor.lm)
+survivor.lm.1 <- glm(Attitude ~ poc * div_rules + age + season, data = survivor, family = "binomial")
+summary(survivor.lm.1)
+survivor.lm.2 <- glm(Attitude ~ poc * div_rules + age + gender + season, data = survivor, family = "binomial")
+summary(survivor.lm.2)
+```
+Do we want a model with race? We are not interested in breaking down by race, only POC status, but it seems sensible to have a model that measures how Attitude is explained by race status and whether the Div_Rules were there, with the interaction term, as well as age and gender. This measures how the presence of div_rules interacts with the relationship between being different races. 
