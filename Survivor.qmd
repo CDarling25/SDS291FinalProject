@@ -82,7 +82,7 @@ survivor.lm <- glm(Attitude ~ poc * div_rules + season, data = survivor, family 
 summary(survivor.lm)
 survivor.lm.1 <- glm(Attitude ~ poc * div_rules + age + season, data = survivor, family = "binomial")
 summary(survivor.lm.1)
-survivor.lm.2 <- glm(Attitude ~ poc * div_rules + age + gender + season, data = survivor, family = "binomial")
+survivor.lm.2 <- glm(Attitude ~ poc * div_rules + age_adj + gender + season, data = survivor, family = "binomial")
 summary(survivor.lm.2)
 ```
 
