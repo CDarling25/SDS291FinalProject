@@ -69,6 +69,17 @@ survivor |>
 ```{r}
 emplogitplot1(Attitude ~ age, data = survivor, ngroups = 10)
 ```
+So this is the best linear approximation that we can fit. Linear assumption is violated, but this is the best we can do with a linear approximation. Then go with the easiest to interpret.  
+
+Summary Stats
+
+```{r}
+survivor_POC <- survivor |> filter(poc == 1)
+survivor_White <- survivor |> filter(poc == 0)
+POC_mean_scores <- survivor_POC |> group_by(season) |> summarise(mean = mean(`Compound Score`))
+White_mean_scores <- survivor_White |> group_by(season) |> summarise(mean = mean(`Compound Score`))
+```
+
 
 We want the following models:
 
