@@ -12,6 +12,7 @@ Quarto enables you to weave together content and executable code into a finished
 library(tidyverse)
 library(AMR)
 library(Stat2Data)
+library(kableExtra)
 survivor <- read_csv('eval.csv')
 survivor <- survivor[-106, ]
 survivor$age_adj <- survivor$age - 18
@@ -87,5 +88,43 @@ survivor.lm.2 <- glm(Attitude ~ poc * div_rules + age_adj + gender + season, dat
 summary(survivor.lm.2)
 ```
 
-
 Do we want a model with race? We are not interested in breaking down by race, only POC status, but it seems sensible to have a model that measures how Attitude is explained by race status and whether the Div_Rules were there, with the interaction term, as well as age and gender. This measures how the presence of div_rules interacts with the relationship between being different races.
+
+# Summary Stats
+## Demographics
+```{r}
+#| label: tbl-summary-stats
+#| tbl-cap: "Demographic Characteristics of the Players in the Study Population"
+#| echo: false
+df <- data.frame(Gender = "",
+                         Male = "91 (49.46)",
+                         Female = "93 (50.54)",
+                         Age = "",
+                         All = "32.80 ± 8.95",
+                         Race = "",
+                         'Asian/Pacific Islander' = "28 (15.22)",
+                         Black = "39 (21.11)",
+                         Hispanic_Latino = "17 (9.24)",
+                         White = "100 (54.35)",
+                         Season = "",
+                 "36" = "20 (10.87)",
+                 "37" = "20 (10.87)",
+                 "38" = "18 (9.78)",
+                 "39" = "20 (10.87)",
+                 "40" = "18 (9.78)",
+                 "41" = "17 (9.24)",
+                 "42" = "18 (9.78)",
+                 "43" = "18 (9.78)",
+                 "44" = "17 (9.24)",
+                 "45" = "18 (9.78)")
+df_footnote <- df
+colnames(df_footnote) = c("Gender","Male - no. (%)", "Female - no. (%)", "Age - yr.", "All", "Race - no (%)", "Asian/Pacific Islander", "Black", "Hispanic or Latino", "White", "Season - no. (%)", "36", "37", "38", "39", "40","41","42","43","44", "45")
+colnames(df_footnote)[4] <- paste0(colnames(df_footnote)[4], footnote_marker_symbol(1))
+colnames(df_footnote)[6] <- paste0(colnames(df_footnote)[6], footnote_marker_symbol(2))
+df_pivot_longer <- df_footnote |> pivot_longer(cols = c(1:21), names_to = "Characteristic", values_to = "Value") 
+df_pivot_longer |>
+  kable(escape = F) |>
+  kable_styling() |>
+  row_spec(c(1,4,6, 11),bold=T,hline_after = T) |>
+  footnote(symbol = c("Mean age of players ± Std. Deviation", "Race as provided by the Survivor Wiki"))
+```
