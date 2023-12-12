@@ -44,6 +44,22 @@ length(which(survivor$poc != "POC" & survivor$Attitude == 1 & survivor$season %i
 
 ```
 
+| *Contingency Table*                   |  **POC**  | **White**  |
+|-----------------------------|------------|-------------|
+|**Pre-Diversity Rules**   |    32            |     64             |
+|**Post-Diversity Rules** |    52            |     36             |
+
+```{r}
+survivor_POC <- survivor |> filter(poc == 1)
+survivor_White <- survivor |> filter(poc == 0)
+num_poc_post <- sum(survivor_POC$div_rules)
+num_poc_pre <- nrow(survivor_POC) - num_poc_post
+num_white_post <- sum(survivor_White$div_rules)
+num_white_pre <- nrow(survivor_White) - num_white_post
+```
+
+
+
 ```{r}
 ggplot(data = survivor, 
        mapping = aes(x = as.factor(Attitude),
@@ -74,10 +90,8 @@ So this is the best linear approximation that we can fit. Linear assumption is v
 Summary Stats
 
 ```{r}
-survivor_POC <- survivor |> filter(poc == 1)
-survivor_White <- survivor |> filter(poc == 0)
-POC_mean_scores <- survivor_POC |> group_by(season) |> summarise(mean = mean(`Compound Score`))
-White_mean_scores <- survivor_White |> group_by(season) |> summarise(mean = mean(`Compound Score`))
+POC_mean_scores <- survivor_POC |> group_by(season) |> summarise(mean = mean(`Compound Score`), std = sd(`Compound Score`))
+White_mean_scores <- survivor_White |> group_by(season) |> summarise(mean = mean(`Compound Score`), std = sd(`Compound Score`))
 ```
 
 
