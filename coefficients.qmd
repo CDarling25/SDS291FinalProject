@@ -8,6 +8,8 @@ format: html
 exp(0.52950)
 
 exp(0.52950) / (1+exp(0.52950))
+
+
 ```
 
 The predicted odds of an 18 year old white female player's first significant confessional portraying a positive attitude on season 36, before the implementation of diversity rules, are 1.70. The predicted probability is 0.63. 
@@ -16,32 +18,48 @@ The predicted odds of an 18 year old white female player's first significant con
 # POC interpretation
 exp(-0.47234)
 
-100 - 100*exp(-0.47234)
+100*exp(-0.47234) - 100
 ```
 
 ```{r}
-exp(coef(survivor.lm.2)[2] + c(-1, 1)*qnorm(0.975)*sqrt(vcov(survivor.lm.2)[2, 2]))
+poc_ci = exp(coef(survivor.lm.2)[2] + c(-1, 1)*qnorm(0.975)*sqrt(vcov(survivor.lm.2)[2, 2]))
+
+poc_ci[1]*100 - 100
+poc_ci[2]*100 - 100
 ```
 
-For players of the same age and gender playing on the same season pre-diversity rule implementation, the predicted odds of a player's first significant confessional portraying a positive attitude are 37.6% lower for players of color than white players.
+For players of the same age and gender playing on the same season pre-diversity rule implementation, the predicted odds of a player's first significant confessional portraying a positive attitude are 37.6% lower (95% CI: 76.6% decrease, 66.1% increase) for players of color than white players.
 
 ```{r}
 # POC * diversity rule interpretation
 exp(-0.47234 + 0.35283)
 
-100 - 100*exp(-0.47234 + 0.35283)
+100*exp(-0.47234 + 0.35283) - 100
 ```
 
-For players of the same age and gender playing on the same season post-diversity rule implementation, the predicted odds of a player's first significant confessional portraying a positive attitude are 11.3% lower for players of color than white players.
+```{r}
+poc_div_ci = exp((-0.47234 + 0.35283) + c(-1,1)*qnorm(0.975)*sqrt(vcov(survivor.lm.2)[2,2] + vcov(survivor.lm.2)[15,15] + 2*vcov(survivor.lm.2)[2,15]))
+
+poc_div_ci[1]*100 - 100
+
+poc_div_ci[2]*100 - 100
+```
+
+For players of the same age and gender playing on the same season post-diversity rule implementation, the predicted odds of a player's first significant confessional portraying a positive attitude are 11.3% lower (95% CI: 70.4% decrease, 166% increase) for players of color than white players. 
 
 ```{r}
 # Gender interpretation
 exp(0.32090)
 
 100*exp(0.32090) - 100
+
+gender_ci = exp(coef(survivor.lm.2)[5] + c(-1, 1)*qnorm(0.975)*sqrt(vcov(survivor.lm.2)[5, 5]))
+
+100*gender_ci[1] - 100
+100*gender_ci[2] - 100
 ```
 
-For players of the same age and poc status playing on the same season, the predicted odds of a player's first significant confessional portraying a positive attitude are 37.8% higher for male players than female players.
+For players of the same age and poc status playing on the same season, the predicted odds of a player's first significant confessional portraying a positive attitude are 37.8% higher (95% CI: 31.4% decrease, 177% increase) for male players than female players.
 
 ```{r}
 # Age interpretation
@@ -51,10 +69,13 @@ exp(0.00549)
 ```
 
 ```{r}
-exp(coef(survivor.lm.2)[4] + c(-1, 1)*qnorm(0.975)*sqrt(vcov(survivor.lm.2)[4, 4]))
+age_ci = exp(coef(survivor.lm.2)[4] + c(-1, 1)*qnorm(0.975)*sqrt(vcov(survivor.lm.2)[4, 4]))
+
+100*age_ci[1] - 100
+100*age_ci[2] - 100
 ```
 
-For players of the same gender and poc status playing on the same season, a one-year increase in player age is associated with a 0.55% increase in the predicted odds of a player's first significant confessional portraying a positive attitude.
+For players of the same gender and poc status playing on the same season, a one-year increase in player age is associated with a 0.55% increase (95% CI: 3.49% decrease, 4.76% increase) in the predicted odds of a player's first significant confessional portraying a positive attitude.
 
 ```{r}
 # Season 37 interpretation
@@ -69,7 +90,7 @@ For players of the same age, gender, and poc status, the the predicted odds of a
 # Season 38 interpretation
 exp(-0.17742)
 
-100 - exp(-0.17742)*100
+exp(-0.17742)*100 - 100
 ```
 
 For players of the same age, gender, and poc status, the the predicted odds of a player's first significant confessional portraying a positive attitude are 16.3% lower on season 38 than season 36.
@@ -96,7 +117,7 @@ For players of the same age, gender, and poc status, the the predicted odds of a
 # Season 41 interpretation
 exp(1.39589 -1.50466)
 
-100 - exp(1.39589 -1.50466)*100
+exp(1.39589 -1.50466)*100 - 100
 ```
 
 For players of the same age, gender, and poc status, the the predicted odds of a player's first significant confessional portraying a positive attitude are 10.3% lower on season 41 than season 45.
