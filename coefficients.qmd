@@ -1,0 +1,123 @@
+---
+title: "Untitled"
+format: html
+---
+
+```{r}
+# Intercept interpretation
+exp(0.52950)
+
+exp(0.52950) / (1+exp(0.52950))
+```
+
+The predicted odds of an 18 year old white female player's first significant confessional portraying a positive attitude on season 36, before the implementation of diversity rules, are 1.70. The predicted probability is 0.63. 
+
+```{r}
+exp(-0.47234)
+
+100 - 100*exp(-0.47234)
+```
+
+For players of the same age and gender playing on the same season pre-diversity rule implementation, the predicted odds of a player's first significant confessional portraying a positive attitude are 37.6% lower for players of color than white players.
+
+```{r}
+exp(-0.47234 + 0.35283)
+
+100 - 100*exp(-0.47234 + 0.35283)
+```
+
+For players of the same age and gender playing on the same season post-diversity rule implementation, the predicted odds of a player's first significant confessional portraying a positive attitude are 11.3% lower for players of color than white players.
+
+```{r}
+exp(0.32090)
+
+100*exp(0.32090) - 100
+```
+
+For players of the same age and poc status playing on the same season, the predicted odds of a player's first significant confessional portraying a positive attitude are 37.8% higher for male players than female players.
+
+```{r}
+exp(0.00549)
+
+100*exp(0.00549) - 100
+```
+
+For players of the same gender and poc status playing on the same season, a one-year increase in player age is associated with a 0.55% increase in the predicted odds of a player's first significant confessional portraying a positive attitude.
+
+```{r}
+exp(1.21085)
+
+exp(1.21085)*100 - 100
+```
+
+For players of the same age, gender, and poc status, the the predicted odds of a player's first significant confessional portraying a positive attitude are 236% higher on season 37 than season 36.
+
+```{r}
+exp(-0.17742)
+
+100 - exp(-0.17742)*100
+```
+
+For players of the same age, gender, and poc status, the the predicted odds of a player's first significant confessional portraying a positive attitude are 16.3% lower on season 38 than season 36.
+
+```{r}
+exp(0.29696)
+
+exp(0.29696)*100 - 100
+```
+
+For players of the same age, gender, and poc status, the the predicted odds of a player's first significant confessional portraying a positive attitude are 34.6% higher on season 39 than season 36.
+
+```{r}
+exp(0.28638)
+
+exp(0.28638)*100 - 100
+```
+
+For players of the same age, gender, and poc status, the the predicted odds of a player's first significant confessional portraying a positive attitude are 33.2% higher on season 40 than season 36.
+
+```{r}
+exp(1.39589 -1.50466)
+
+100 - exp(1.39589 -1.50466)*100
+```
+
+For players of the same age, gender, and poc status, the the predicted odds of a player's first significant confessional portraying a positive attitude are 10.3% lower on season 41 than season 45.
+
+```{r}
+exp(1.39589 -0.83982)
+
+exp(1.39589 -0.83982)*100 - 100
+```
+
+For players of the same age, gender, and poc status, the the predicted odds of a player's first significant confessional portraying a positive attitude are 74.4% higher on season 42 than season 45.
+
+```{r}
+exp(1.39589 -0.81816)
+
+exp(1.39589 -0.81816)*100 - 100
+```
+
+For players of the same age, gender, and poc status, the the predicted odds of a player's first significant confessional portraying a positive attitude are 78.2% higher on season 43 than season 45.
+
+```{r}
+exp(1.39589 -0.04789)
+
+exp(1.39589 -0.04789)*100 - 100
+```
+
+For players of the same age, gender, and poc status, the the predicted odds of a player's first significant confessional portraying a positive attitude are 285% higher on season 44 than season 45.
+
+```{r}
+exp(1.39589)
+
+exp(1.39589)*100 - 100
+```
+
+For players of the same age, gender, and poc status, the the predicted odds of a player's first significant confessional portraying a positive attitude are 304% higher on season 45 than season 36.
+
+
+
+
+
+
