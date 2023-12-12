@@ -58,6 +58,20 @@ num_white_post <- sum(survivor_White$div_rules)
 num_white_pre <- nrow(survivor_White) - num_white_post
 ```
 
+```{r}
+#creating a categorical poc variable
+survivor <- survivor |> mutate(poc_category = ifelse(poc == 1, "POC", "White"))
+
+#creating a categorical div rules variable
+survivor <- survivor |> mutate(div_rules_category = ifelse(div_rules == 0, "Pre-Diversity Rules", "Post-Diversity Rules"))
+
+survivor |> ggplot(aes(x = poc_category, y = `Compound Score`, color = poc_category)) + 
+  geom_boxplot() + 
+  facet_grid(~factor(survivor$div_rules_category, levels=c("Pre-Diversity Rules", "Post-Diversity Rules"))) + 
+  labs(x = " ") + 
+  theme(legend.position = "none")
+  
+```
 
 
 ```{r}
