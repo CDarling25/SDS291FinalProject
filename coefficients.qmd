@@ -176,6 +176,6 @@ survivor.minimal = glm(Attitude ~ poc * div_rules + season, data = survivor, fam
 anova(survivor.minimal, survivor.full, test = "Chisq")
 ```
 
-$$logit \{P(Y_i=1|POC,div,age,gender,season)\} = 0.53 - (0.47 \times poc) + (1.40 \times div) + (0.005 \times age)+ (0.32 \times male)$$
+$$logit \{P(Y_i=1|poc,div,age,gender,season)\} = 0.53 - (0.47 \times poc) + (1.40 \times div) + (0.005 \times age)+ (0.32 \times male)$$
 $$+ (1.21 \times season37) - (0.18 \times season38) + (0.30 \times season39) + (0.29 \times season40) - (1.50 \times season41)$$
 $$-(0.84 \times season42) - (0.82 \times season43) - (0.05 \times season44) + (0.35 \times poc \times div)$$
