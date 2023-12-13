@@ -159,7 +159,19 @@ exp(1.39589)*100 - 100
 For players of the same age, gender, and poc status, the the predicted odds of a player's first significant confessional portraying a positive attitude are 304% higher on season 45 than season 36.
 
 
+```{r}
+kable(broom::tidy(survivor.lm.2), digits = 2)
+```
 
 
+```{r}
+survivor.full = glm(Attitude ~ poc * div_rules + age_adj + gender + season, data = survivor, family = "binomial")
+survivor.null = glm(Attitude ~ 1, data = survivor, family = "binomial")
+anova(survivor.null, survivor.full, test = "Chisq")
+```
 
-
+```{r}
+survivor.full = glm(Attitude ~ poc * div_rules + age_adj + gender + season, data = survivor, family = "binomial")
+survivor.minimal = glm(Attitude ~ poc * div_rules + season, data = survivor, family = "binomial")
+anova(survivor.minimal, survivor.full, test = "Chisq")
+```
