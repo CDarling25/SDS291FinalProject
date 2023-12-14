@@ -1,14 +1,13 @@
 ---
-title: "Final Project"
+title: "SDS 291 Final Project"
+author: "Laura Edwards, Cameron Darling, Mags McLaughlin, and Natalie Szewczyk"
 format: pdf
 editor: visual
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
 ```{r}
+#| include: false
+
 library(tidyverse)
 library(AMR)
 library(Stat2Data)
@@ -18,7 +17,31 @@ survivor <- survivor[-106, ]
 survivor$age_adj <- survivor$age - 18
 ```
 
+**Abstract**
+
+**Introduction**
+
+Survivor is one of cable television’s longest-running reality competition shows. Advertised as a ‘microcosm for our real world’ by executive producer Jeff Probst (Wigler 2019), every season, about 20 people are taken to an exotic location, given little supplies, and divided into tribes. They are then tasked with creating a new society amongst themselves while competing in physical and mental challenges, voting each other out along the way, each player working towards the goal of being the last person remaining to win one million dollars. 
+
+Being a competition show focused heavily on the social interactions of its players, the topic of race and its impact on player experience and player outcomes has been discussed at length. Excluding Season 13, Cook’s Island, in which players were segregated by race as part of the season’s theme, Survivor’s season casts have been historically dominated by white players. This likely contributed to many players of color having negative experiences with their castmates going unaddressed, as detailed in an episode of Morning Edition by NPR (Deggan 2020), as well as a Zoom roundtable featuring several past black Survivor players. 
+
+As a reaction to the broader cultural reaction to the George Floyd Protests, as well as a petition released on Juneteenth 2020 from some of Survivor’s past black players, in November of 2020, CBS announced that beginning in Season 41, 50% of the Survivor castaways would be POC. Diversity measures like CBS’ have been implemented in workplaces before, and have been shown to improve firm performance, team creativity, among other similar metrics in a wide variety of contexts (Gomez et al. 2019, Kumar & Gupta 2023). However, do these same benefits translate at a qualitative level in a reality television context? Our study aims to, in part, evaluate the efficacy of the 2020 Survivor diversity initiative on improving the portrayal of POC players themselves, by addressing the following questions: is there a relationship between whether or not a player had a positive, portrayed* initial attitude towards the game and whether or not the player’s season occurred before or after the diversity casting rules were implemented? Do other social demographic factors, such as age and gender of a player, moderate this relationship, if it exists?
+
+**Methods**
+
+*Data Source*
+
+Our dataset combines existing data gathered by Survivor fans from the ‘castaway_details’ dataset from the survivoR R Package on GitHub with transcribed confessionals transcripts and sentiment analysis done by our team. The ‘castaway_details’  dataset contains details on a player’s gender, POC identity, date of birth, and other detailed demographic information which is not relevant to this study. Per the package author, this demographic information was collected from the Survivor Wiki, Wikipedia, and from individual package contributors.
+
+*Study Population*
+
+Our team studied the 184 players’ confessionals from Season 36-45, the five seasons preceding and five seasons immediately following the diversity casting rules being put into effect. Looking at the first four episodes of each season, a player’s first confessional which matched the criteria outlined in Figure I was included in the dataset. Each confessional was then analyzed using the VADER sentiment analyzer (version 3.3.2) in Python and coded as positive (scores higher than 0) or negative (scores 0 and below) to measure a player’s portrayed initial attitude towards the game.
+
+*Operational Validity of First Confessionals*
+
+![Figure 1: Confessional Selection Guidelines](Flowchart.jpeg)
 ```{r}
+#age distribution of Survivor players 
 ggplot(data = survivor, mapping = aes(x = age)) + geom_boxplot()
 # Janet Carbin, Heather Aldret, Mike Turner, and Mike Gabler are the old players
 IQR(survivor$age)
@@ -44,10 +67,10 @@ length(which(survivor$poc != "POC" & survivor$Attitude == 1 & survivor$season %i
 
 ```
 
-| *Contingency Table*                   |  **POC**  | **White**  |
-|-----------------------------|------------|-------------|
-|**Pre-Diversity Rules**   |    32            |     64             |
-|**Post-Diversity Rules** |    52            |     36             |
+| *Contingency Table*      | **POC** | **White** |
+|--------------------------|---------|-----------|
+| **Pre-Diversity Rules**  | 32      | 64        |
+| **Post-Diversity Rules** | 52      | 36        |
 
 ```{r}
 survivor_POC <- survivor |> filter(poc == 1)
@@ -73,7 +96,6 @@ survivor |> ggplot(aes(x = poc_category, y = `Compound Score`, color = poc_categ
   
 ```
 
-
 ```{r}
 ggplot(data = survivor, 
        mapping = aes(x = as.factor(Attitude),
@@ -96,18 +118,12 @@ survivor |>
             number_of_players = n())
 ```
 
-```{r}
-emplogitplot1(Attitude ~ age, data = survivor, ngroups = 10)
-```
-So this is the best linear approximation that we can fit. Linear assumption is violated, but this is the best we can do with a linear approximation. Then go with the easiest to interpret.  
-
 Summary Stats
 
 ```{r}
 POC_mean_scores <- survivor_POC |> group_by(season) |> summarise(mean = mean(`Compound Score`), std = sd(`Compound Score`))
 White_mean_scores <- survivor_White |> group_by(season) |> summarise(mean = mean(`Compound Score`), std = sd(`Compound Score`))
 ```
-
 
 We want the following models:
 
@@ -136,7 +152,9 @@ kable(broom::tidy(survivor.lm.2), digits = 2,
 Do we want a model with race? We are not interested in breaking down by race, only POC status, but it seems sensible to have a model that measures how Attitude is explained by race status and whether the Div_Rules were there, with the interaction term, as well as age and gender. This measures how the presence of div_rules interacts with the relationship between being different races.
 
 # Summary Stats
+
 ## Demographics
+
 ```{r}
 #| label: tbl-summary-stats
 #| tbl-cap: "Demographic Characteristics of the Players in the Study Population"
@@ -173,3 +191,10 @@ df_pivot_longer |>
   row_spec(c(1,4,6, 11),bold=T,hline_after = T) |>
   footnote(symbol = c("Mean age of players ± Std. Deviation", "Race as provided by the Survivor Wiki"))
 ```
+
+**Assumptions**
+
+```{r}
+emplogitplot1(Attitude ~ age, data = survivor, ngroups = 10)
+```
+For age the linear assumption is violated, but this is the best we can do with a linear approximation.
