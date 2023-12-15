@@ -101,6 +101,49 @@ survivor |>
             number_of_players = n())
 ```
 
+*Statistical Analysis*
+
+Using multiple logistic regression, our study will fit a model to the dataset to investigate the existence of a relationship between the log-likelihood of a portrayed positive initial attitude towards the game with the player’s status as a person of color, before the implementation of diversity casting rules (Seasons 36-40) and after the implementation of diversity casting rules (Seasons 41-45). Our study also will investigate whether this relationship is moderated by the accounting of other key factors of season of appearance, age, and gender. Selection of the demographic factors for our model is based upon the sizable interest and proclaimed importance to success in both the physical and social aspects of gameplay in the Survivor cultural sphere, as well as limitations on data availability and study timeline.
+
+We hypothesize that after the implementation of diversity casting rules, the likelihood that a POC player had a positive portrayed initial attitude towards the game meaningfully increased, even after accounting for the age and gender of a player.
+
+**Results**
+
+```{r}
+#| include: false
+survivor$season <- as.factor(survivor$season)
+survivor.lm <- glm(Attitude ~ poc * div_rules + season, data = survivor, family = "binomial")
+summary(survivor.lm)
+survivor.lm.1 <- glm(Attitude ~ poc * div_rules + age + season, data = survivor, family = "binomial")
+summary(survivor.lm.1)
+survivor.lm.2 <- glm(Attitude ~ poc * div_rules + age_adj + gender + season, data = survivor, family = "binomial")
+summary(survivor.lm.2)
+```
+
+Our model attempts to predict the odds that a Survivor player's first significant confessional portrays a positive attitude towards the game given the player’s status as a person of color, age, gender, season of the show, and the presence of the diversity casting rules. We produced the population model:
+
+$$logit \{P(Y_i=1|poc,div\_rules,age,gender,season)\} = 0.53 - (0.47 \times poc) + (1.40 \times div\_rules) + (0.005 \times age)+ (0.32 \times male)$$
+In this model, poc indicates whether a player is a person of color, age gives age in years with 18 subtracted to account for the minimum age for players, and gender indicates whether a player is male or female. Additionally, div_rules indicates the implementation of diversity casting rules on a season, and season gives the season number.
+
+We find that for players of the same age and gender playing on the same season pre-diversity rule implementation, the predicted odds of a player's first significant confessional portraying a positive attitude are 34.6% lower for players of color than white players (95% CI: 76.6% lower, 66.1% higher). For players of the same age and gender playing on the same season post-diversity rule implementation, the predicted odds of a player's first significant confessional portraying a positive attitude are 11.3% lower for players of color than white players (95% CI: 70.4% lower, 166% higher). Comparing seasons pre- and post-diversity rule implementation, we find that the difference in the difference in predicted odds ratio becomes smaller after the diversity rules are implemented, suggesting that the diversity rules have a positive association with the odds that a player of color has a positive, initially portrayed attitude in their first significant confessional.
+
+```{r}
+#| echo: false
+
+kable(broom::tidy(survivor.lm.2), digits = 2,
+      col.names = c("Term", "Estimate", "Std. Error", "z-Statistic", "P-Value"))
+```
+
+All of the individual coefficients have p-values greater than the 95% confidence threshold of p=0.05. For our predictors of interest in relation to our initial hypotheses–the POC status of the player, the implementation of the diversity rules, as well as a player’s age and gender–, this result indicates that none of these predictors when considered together along with our other predictors controlling for potential season editing clusters were associated with changes in the odds of an initial, portrayed positive attitude for a player. 
+
+Supporting the results of our Wald tests on the individual coefficients, we also find that the overall model is not significant (p=0.58), and that an intercept-only model is sufficient to predict the odds of an initial positive portrayed attitude of a player using a likelihood ratio test. Comparing preliminary models without age and gender predictors to our full model for this analysis, we also found that the addition of these two predictors, both separately (p = 0.3657; p = 0.7924) and added together (p = 0.6304), was insignificant in meaningfully improving model fit to the data. See the Appendix for full results of regression analyses for the reduced models utilizing the age and gender predictors. 
+
+**Discussion and Conclusion**
+
+Following the cultural reckoning caused by the broad social movement associated with the George Floyd Protests of 2020, many workplaces and businesses responded by implementing diversity, equity, and inclusion (DEI) initiatives. Evaluating the efficacy of these DEI initiatives is an important task and challenge for organizations as they seek to improve workplace equity in the future. 
+
+
+
 ```{r}
 #age distribution of Survivor players 
 ggplot(data = survivor, mapping = aes(x = age)) + geom_boxplot()
@@ -156,20 +199,9 @@ Model that measures how Attitude is explained by POC status and whether the Div_
 
 Model that measures how Attitude is explained by POC status and whether the Div_Rules were there, with the interaction term, as well as age and gender. This measures how the presence of div_rules interacts with the relationship between being poc and having a positive attitude after accounting for age and gender.
 
-```{r}
-survivor$season <- as.factor(survivor$season)
-survivor.lm <- glm(Attitude ~ poc * div_rules + season, data = survivor, family = "binomial")
-summary(survivor.lm)
-survivor.lm.1 <- glm(Attitude ~ poc * div_rules + age + season, data = survivor, family = "binomial")
-summary(survivor.lm.1)
-survivor.lm.2 <- glm(Attitude ~ poc * div_rules + age_adj + gender + season, data = survivor, family = "binomial")
-summary(survivor.lm.2)
-```
 
-```{r}
-kable(broom::tidy(survivor.lm.2), digits = 2,
-      col.names = c("Term", "Estimate", "Std. Error", "z-Statistic", "P-Value"))
-```
+
+
 
 
 Do we want a model with race? We are not interested in breaking down by race, only POC status, but it seems sensible to have a model that measures how Attitude is explained by race status and whether the Div_Rules were there, with the interaction term, as well as age and gender. This measures how the presence of div_rules interacts with the relationship between being different races.
