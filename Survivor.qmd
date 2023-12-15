@@ -37,9 +37,70 @@ Our dataset combines existing data gathered by Survivor fans from the ‘castawa
 
 Our team studied the 184 players’ confessionals from Season 36-45, the five seasons preceding and five seasons immediately following the diversity casting rules being put into effect. Looking at the first four episodes of each season, a player’s first confessional which matched the criteria outlined in Figure I was included in the dataset. Each confessional was then analyzed using the VADER sentiment analyzer (version 3.3.2) in Python and coded as positive (scores higher than 0) or negative (scores 0 and below) to measure a player’s portrayed initial attitude towards the game.
 
+|       | **POC** | **White** |
+|--------------------------|---------|-----------|
+| **Pre-Diversity Rules**  | 32      | 64        |
+| **Post-Diversity Rules** | 52      | 36        |
+
+: Contingency Table Showing Distribution of Our Observations 
+
+```{r}
+#| echo: false
+#| fig-cap: 
+#|   - "Compound Scores of 185 Players from Survivor, pre- and post- implementation of diversity casting rules"
+
+#creating a categorical poc variable
+survivor <- survivor |> mutate(poc_category = ifelse(poc == 1, "POC", "White"))
+
+#creating a categorical div rules variable
+survivor <- survivor |> mutate(div_rules_category = ifelse(div_rules == 0, "Pre-Diversity Rules", "Post-Diversity Rules"))
+
+survivor |> ggplot(aes(x = poc_category, y = `Compound Score`, color = poc_category)) + 
+  geom_boxplot() + 
+  facet_grid(~factor(survivor$div_rules_category, levels=c("Pre-Diversity Rules", "Post-Diversity Rules"))) + 
+  labs(title = "Distribution of Player's Compound Score's Pre- and Post- Diversity Rules", x = " ") + 
+  theme(legend.position = "none")
+  
+```
+
+
 *Operational Validity of First Confessionals*
 
-![Figure 1: Confessional Selection Guidelines](Flowchart.jpeg)
+We used a player’s first confessional which matched the criteria outlined in Figure I, which attempts to isolate confessionals relating to personal strategy, motivations, and relationships, to capture the first impression that viewers receive of the attitude of a player, which, regardless of the player’s overall season story arc, acts as a foundation with which the viewers contextualize the rest of the player’s game.  
+
+![Figure 1: Confessional Selection Guidelines](Flowchart.jpeg){width = 80%}
+Four players lacked confessionals which met the guidelines outlined in Figure and were coded as negative by default, as our team took a lack of portrayal as having a negative impact on a player’s portrayal. 
+
+*Dataset*
+
+The combined dataset includes information on the gender, age, race, name, and POC status of each player in addition to their confessional, sentiment analysis score, and portrayed initial attitude. Figure II is a visual representation of the portrayed attitudes of poc and non-POC players pre- (labelled 0) and post- (labelled 1) diversity rules. Visually, the stacked bar plot shows that pre-diversity rules v. post-diversity rules, a smaller share of the ‘positive’ portrayed attitudes are from POC players, however, a larger share of the ‘negative’ portrayed attitudes are from white players. This suggests the rough idea that perhaps, the diversity rules may have had no or a very small effect on the nature in which POC players’ initial attitudes were portrayed, although this difference, or lack thereof, will be explored more formally in our statistical analysis.
+
+```{r}
+#| echo: false
+#| fig-cap: 
+#|   - "Positive and Negative Portrayed Attitudes of 185 Players from Survivor, pre- and post- implementation of diversity casting rules"
+
+ggplot(data = survivor, 
+       mapping = aes(x = as.factor(Attitude),
+                     fill = as.factor(poc) )) +
+  geom_bar() +
+  facet_wrap(~div_rules_category) + 
+  labs(title = "Initial Attitudes of POC and White Players Pre- and Post- Implementation of Diversity Casting Rules on CBS's Survivor",
+         fill = "POC Status"
+       ) +
+  scale_fill_discrete(labels = c("White", "POC")) +
+  scale_x_discrete(labels=c("Negative", "Positive")) +
+  xlab("Attitude") +
+  ylab("Count")
+
+# summary table 
+survivor |>
+  group_by(div_rules) |>
+  summarize(mean_compound_score = mean(`Compound Score`),
+            mean_age = mean(age),
+            number_of_players = n())
+```
+
 ```{r}
 #age distribution of Survivor players 
 ggplot(data = survivor, mapping = aes(x = age)) + geom_boxplot()
@@ -67,10 +128,6 @@ length(which(survivor$poc != "POC" & survivor$Attitude == 1 & survivor$season %i
 
 ```
 
-| *Contingency Table*      | **POC** | **White** |
-|--------------------------|---------|-----------|
-| **Pre-Diversity Rules**  | 32      | 64        |
-| **Post-Diversity Rules** | 52      | 36        |
 
 ```{r}
 survivor_POC <- survivor |> filter(poc == 1)
@@ -81,42 +138,8 @@ num_white_post <- sum(survivor_White$div_rules)
 num_white_pre <- nrow(survivor_White) - num_white_post
 ```
 
-```{r}
-#creating a categorical poc variable
-survivor <- survivor |> mutate(poc_category = ifelse(poc == 1, "POC", "White"))
 
-#creating a categorical div rules variable
-survivor <- survivor |> mutate(div_rules_category = ifelse(div_rules == 0, "Pre-Diversity Rules", "Post-Diversity Rules"))
 
-survivor |> ggplot(aes(x = poc_category, y = `Compound Score`, color = poc_category)) + 
-  geom_boxplot() + 
-  facet_grid(~factor(survivor$div_rules_category, levels=c("Pre-Diversity Rules", "Post-Diversity Rules"))) + 
-  labs(x = " ") + 
-  theme(legend.position = "none")
-  
-```
-
-```{r}
-ggplot(data = survivor, 
-       mapping = aes(x = as.factor(Attitude),
-                     fill = as.factor(poc) )) +
-  geom_bar() +
-  facet_wrap(~div_rules) + 
-  labs(title = "Initial Attitudes of POC and White Players Pre- and Post- Implementation of Diversity Casting Rules on CBS's Survivor",
-         fill = "POC Status"
-       ) +
-  scale_fill_discrete(labels = c("White", "POC")) +
-  scale_x_discrete(labels=c("Negative", "Positive")) +
-  xlab("Attitude") +
-  ylab("Count")
-
-# summary table 
-survivor |>
-  group_by(div_rules) |>
-  summarize(mean_compound_score = mean(`Compound Score`),
-            mean_age = mean(age),
-            number_of_players = n())
-```
 
 Summary Stats
 
