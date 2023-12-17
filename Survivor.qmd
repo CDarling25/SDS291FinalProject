@@ -264,13 +264,14 @@ $$\beta_2Div\_Rules_i + \beta_3Age_i+ \beta_4Gender_i + \beta_{5-13}Season_i + \
 #| tbl-cap: "Likelihood Ratio Test Results for Full Model"
 #| echo: false
 #| warning: false
+#| column: page
 
 survivor.null = glm(Attitude ~ 1, data = survivor, family = "binomial")
 
-full.test = anova(survivor.null, survivor.model, test = "Chisq")
+full.test = broom::tidy(anova(survivor.null, survivor.model, test = "Chisq"))
 
-kable(broom::tidy(full.test),
-      col.names = c("Model", "Resid. DF", "Resid. Deviance", "DF", "Deviance", "P-Value"), digits = 2)
+kable(full.test,
+      col.names = c("Model","Resid. DF", "Resid. Deviance", "DF", "Deviance", "P-Value"), digits = 2)
 ```
 
 To assess the significance of age and gender in our model, we conducted a second likelihood ratio test under the hypotheses
@@ -284,11 +285,12 @@ $$H_A: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \b
 #| tbl-cap: "Likelihood Ratio Test Results for Reduced Model"
 #| echo: false
 #| warning: false
+#| column: page
 
 survivor.minimal = glm(Attitude ~ poc * div_rules + season, data = survivor, family = "binomial")
 
-minimal.test = anova(survivor.minimal, survivor.model, test = "Chisq")
+minimal.test = broom::tidy(anova(survivor.minimal, survivor.model, test = "Chisq"))
 
-kable(broom::tidy(minimal.test),
+kable(minimal.test,
       col.names = c("Model", "Resid. DF", "Resid. Deviance", "DF", "Deviance", "P-Value"), digits = 2)
 ```
