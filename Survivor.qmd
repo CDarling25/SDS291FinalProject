@@ -167,8 +167,7 @@ Accurate regression analyses relies on, first and foremost, accurate data with w
 
 Our investigation also may have benefitted from a larger sample size; our present samples were limited to 17-20 players with significant confessionals for each of the 10 seasons included. As additional seasons of Survivor with diversity casting rules in place are produced, the scope of future research models may expand to include additional seasons before and after the updated casting rules took effect. Our study also chose to exclude the singular nonbinary player due to lack of data on those of their gender. A larger sample size may also introduce a sufficient number of nonbinary players such that this population could be represented in analyses. Overall, additional observations will increase the statistical power of our study, decreasing the error associated with our model predictors which increases the chance we detect the effect of the casting rules if it exists, perhaps yielding significant model predictors, which we did not have in our study.
  	
- 	Additionally, there may be more valid methods to evaluate the portrayed attitude of a player. Confessionals alone may not be fully indicative of a players’ portrayed attitudes, as conversations with other players often capture attitude as well. 
- 	Our team’s use of the VADER sentiment analyzer to construct the attitudes of the confessionals in our dataset may also pose limitations as this tool itself relies on a model, introducing error into the process of polarity classification for confessionals. Alternative methods of sentiment analysis using recurrent neural networks or machine learning algorithms may be more accurate at capturing the true sentiment of player confessionals to measure player portrayal. Even better at measuring the player portrayal would be sufficiently large, randomly-sampled viewer surveys about the perception of the different players, which could be aggregated and averaged to generate a numerical summary of how each player’s initial attitude was portrayed. 
+Additionally, there may be more valid methods to evaluate the portrayed attitude of a player. Confessionals alone may not be fully indicative of a players’ portrayed attitudes, as conversations with other players often capture attitude as well. Our team’s use of the VADER sentiment analyzer to construct the attitudes of the confessionals in our dataset may also pose limitations as this tool itself relies on a model, introducing error into the process of polarity classification for confessionals. Alternative methods of sentiment analysis using recurrent neural networks or machine learning algorithms may be more accurate at capturing the true sentiment of player confessionals to measure player portrayal. Even better at measuring the player portrayal would be sufficiently large, randomly-sampled viewer surveys about the perception of the different players, which could be aggregated and averaged to generate a numerical summary of how each player’s initial attitude was portrayed. 
  	
 Logistic regression analysis may not be best-suited for analyzing our dataset. As can be explored further in the Appendix, all assumptions of regression were not met despite various transformations to the relevant variables (notably `Age`), indicating more advanced regression techniques may be appropriate for future research.
 
@@ -180,6 +179,7 @@ Overall, we consider our study to be a preliminary investigation into one aspect
 
 ```{r}
 #| label: Summary-stats-1
+#| include: false
 survivor_POC <- survivor |> filter(poc == 1)
 survivor_White <- survivor |> filter(poc == 0)
 num_poc_post <- sum(survivor_POC$div_rules)
@@ -191,6 +191,7 @@ num_white_pre <- nrow(survivor_White) - num_white_post
 
 ```{r}
 #| label: Summary-stats-2
+#| include: false
 POC_mean_scores <- survivor_POC |> group_by(season) |> summarise(mean = mean(`Compound Score`), std = sd(`Compound Score`))
 White_mean_scores <- survivor_White |> group_by(season) |> summarise(mean = mean(`Compound Score`), std = sd(`Compound Score`))
 ```
@@ -243,6 +244,7 @@ Among our predictors, gender, POC status, season, and presence of diversity cast
 
 ```{r}
 #| label: label-3
+#| echo: false
 emplogitplot1(Attitude ~ age, data = survivor, ngroups = 10)
 ```
 
@@ -253,7 +255,9 @@ However, an empirical logit plot of our only numerical predictor, age, shows vio
 To assess the significance of our model, we conducted a likelihood ratio test under the hypotheses 
 $$H_0: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0$$
 
-$$H_A: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + \\ \beta_2Div\_Rules_i + \beta_3Age_i+ \beta_4Gender_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i$$
+$$H_A: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + $$
+$$\beta_2Div\_Rules_i + \beta_3Age_i+ \beta_4Gender_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i$$
+
 
 ```{r}
 #| label: tbl-full-anova
@@ -271,9 +275,9 @@ kable(broom::tidy(full.test),
 
 To assess the significance of age and gender in our model, we conducted a second likelihood ratio test under the hypotheses
 
-$$H_0: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + \\ \beta_2Div\_Rules_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i$$
+$$H_0: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + $$ $$\beta_2Div\_Rules_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i$$
 
-$$H_A: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + \\ \beta_2Div\_Rules_i + \beta_3Age_i+ \beta_4Gender_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i$$
+$$H_A: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + $$ $$\beta_2Div\_Rules_i + \beta_3Age_i+ \beta_4Gender_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i$$
 
 ```{r}
 #| label: tbl-reduced-anova
