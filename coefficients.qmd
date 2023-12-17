@@ -174,6 +174,10 @@ anova(survivor.null, survivor.full, test = "Chisq")
 survivor.full = glm(Attitude ~ poc * div_rules + age_adj + gender + season, data = survivor, family = "binomial")
 survivor.minimal = glm(Attitude ~ poc * div_rules + season, data = survivor, family = "binomial")
 anova(survivor.minimal, survivor.full, test = "Chisq")
+survivor.minimal.age = glm(Attitude ~ poc * div_rules + age_adj + season, data = survivor, family = "binomial")
+anova(survivor.minimal.age, survivor.full, test = "Chisq")
+survivor.minimal.gender = glm(Attitude ~ poc * div_rules + gender + season, data = survivor, family = "binomial")
+anova(survivor.minimal.gender, survivor.full, test = "Chisq")
 ```
 
 $$logit \{P(Y_i=1|poc,div,age,gender,season)\} = 0.53 - (0.47 \times poc) + (1.40 \times div) + (0.005 \times age)+ (0.32 \times male)$$
