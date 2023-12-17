@@ -142,19 +142,39 @@ kable(survivor.model.tbl, digits = 2,
       col.names = c("Term", "Estimate", "Std. Error", "z-Statistic", "P-Value"))
 ```
 
-All of the individual coefficients have p-values greater than the 95% confidence threshold of p=0.05. For our predictors of interest in relation to our initial hypotheses–the POC status of the player, the implementation of the diversity rules, as well as a player’s age and gender–, this result indicates that none of these predictors when considered together along with our other predictors controlling for potential season editing clusters were associated with changes in the log odds of an initial, portrayed positive attitude for a player. 
+All of the individual coefficients have p-values greater than the 95% confidence threshold of $p=0.05$. For our predictors of interest in relation to our initial hypotheses–the POC status of the player, the implementation of the diversity rules, as well as a player’s age and gender–, this result indicates that none of these predictors when considered together along with our other predictors controlling for potential season editing clusters were associated with changes in the log odds of an initial, portrayed positive attitude for a player. 
 
-Supporting the results of our Wald tests on the individual coefficients, we also find that the overall model is not significant (p=0.58), and that an intercept-only model is sufficient to predict the log odds of an initial positive portrayed attitude of a player using a likelihood ratio test. Comparing preliminary models without age and gender predictors to our full model for this analysis, we also found that the addition of these two predictors, both separately (p = 0.3657; p = 0.7924) and added together (p = 0.6304), was insignificant in meaningfully improving model fit to the data. See the Appendix for full results of regression analyses for the reduced models utilizing the age and gender predictors. 
+Supporting the results of our Wald tests on the individual coefficients, we also find that the overall model is not significant ($p=0.58$), and that an intercept-only model is sufficient to predict the log odds of an initial positive portrayed attitude of a player using a likelihood ratio test. Comparing preliminary models without age and gender predictors to our full model for this analysis, we also found that the addition of these two predictors, both separately ($p = 0.3657; p = 0.7924$) and added together ($p = 0.6304$), was insignificant in meaningfully improving model fit to the data. See the Appendix for full results of regression analyses for the reduced models utilizing the age and gender predictors. 
 
 *add table that shows odds ratios which are much more interpretable than the log odds table that we have*
 
 # Discussion
 
-Following the cultural reckoning caused by the broad social movement associated with the George Floyd Protests of 2020, many workplaces and businesses responded by implementing diversity, equity, and inclusion (DEI) initiatives. Evaluating the efficacy of these DEI initiatives is an important task and challenge for organizations as they seek to improve workplace equity in the future.
+Following the cultural reckoning caused by the broad social movement associated with the George Floyd Protests of 2020, many workplaces and businesses responded by implementing diversity, equity, and inclusion (DEI) initiatives. Evaluating the efficacy of these DEI initiatives is an important task and challenge for organizations as they seek to improve workplace equity in the future. 
+
+Previous research has shown the importance of diverse racial representation in fiction-based media on people’s identity development https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4900900/, response to advertising, and . The present study extends upon this work by attempting to discern the effects of diverse racial representation on the portrayal of reality competition show players of color from a media consumer perspective. 
+
+In concurrence with the findings of related literature of the positive effects of DEI initiatives on people of color in workplace contexts (https://www.emerald.com/insight/content/doi/10.1108/17554211111162471/full/html), our study found that after the diversity casting rules were implemented, the difference in difference of the odds of a player of color having an initial positive, portrayed attitude compared to a white player had decreased. This decrease in the difference in odds suggests that increasing the percentage of players of color on a season of Survivor was associated with an increased likelihood that a player of color would be initially, positively portrayed. 
+
+This association may be due to a variety of interacting components, such as a change in editing and storyarc strategies or a change in mindset of the players of color themselves. This association may also have implications for how Survivor studio efforts to increase Survivor viewership, as previous studies have shown that people tend to seek out media at increased rates which strengthen their in-group identification and the positivity they associate with it (https://www.communications.k-state.edu/doc/marketing-research/age-identification-social-identity-gratifications-and-television-viewing.pdf).
+
+Our study’s finding of the positive association between age and the odds of a player having an initial positive, portrayed attitude disagrees with some researchers who have found negative relationships between age and job well-being (https://www.jstor.org/stable/24720284?seq=10). Our study’s finding of the positive association between being male and the odds of a player having an initial positive, portrayed attitude also disagrees with many researchers who, to their surprise, have found no differences in overall, or even increased job satisfaction in women compared to men. Discerning the mechanisms which drive job satisfaction, as well as many other work-related items, is ongoing. Our study speaks to the mechanisms at play in reality competition shows, which likely meaningfully differ from those relevant in the typical workplace due to the idiosyncratic performance demands and social dynamics in a specific reality competition show environment.
+
 
 # Limitations and Further Research
 
+Accurate regression analyses relies on, first and foremost, accurate data with which to fit a model to. Primary-source data-gathering from the CBS network as well as the players themselves, as opposed to collaborative, second-hand citizen-science efforts which constructed our study’s dataset, in the future will be crucial to evaluating the effect of diversity casting rules on the initial portrayals of the players of color of Survivor. 
+
+Our investigation also may have benefitted a larger sample size; our present samples were limited to 17-20 players with significant confessionals for each of the 10 seasons included. As additional seasons of Survivor with diversity casting rules in place are produced, the scope of future research models may expand to include additional seasons before and after the updated casting rules took effect. Our study also chose to exclude the singular nonbinary player due to lack of data on those of their gender. A larger sample size may also introduce a sufficient number of nonbinary players such that this population could be represented in analyses. Overall, additional observations will increase the statistical power of our study, decreasing the error associated with our model predictors which increases the chance we detect the effect of the casting rules if it exists, perhaps yielding significant model predictors, which we did not have in our study.
+ 	
+ 	Additionally, there may be more valid methods to evaluate the portrayed attitude of a player. Confessionals alone may not be fully indicative of a players’ portrayed attitudes, as conversations with other players often capture attitude as well. 
+ 	Our team’s use of the VADER sentiment analyzer to construct the attitudes of the confessionals in our dataset may also pose limitations as this tool itself relies on a model, introducing error into the process of polarity classification for confessionals. Alternative methods of sentiment analysis using recurrent neural networks or machine learning algorithms may be more accurate at capturing the true sentiment of player confessionals to measure player portrayal. Even better at measuring the player portrayal would be sufficiently large, randomly-sampled viewer surveys about the perception of the different players, which could be aggregated and averaged to generate a numerical summary of how each player’s initial attitude was portrayed. 
+ 	
+Logistic regression analysis may not be best-suited for analyzing our dataset. As can be explored further in the Appendix, all assumptions of regression were not met despite various transformations to the relevant variables (notably `Age`), indicating more advanced regression techniques may be appropriate for future research.
+
 # Conclusion
+
+Overall, we consider our study to be a preliminary investigation into one aspect in the holistic assessment of the efficacy of CBS’ diversity casting rules in Survivor. Our study found a positive association between the implementation of diversity casting rules on the odds that a player of color would have an initial, positive portrayed attitude, even after accounting for the player’s age and gender. Crucial to note, our study did not find that this association was significant; thus, while our findings do not rule out the existence of an effect of the diversity casting rules on the odds that a player of color would have an initial, positive portrayed attitude, it does not confirm that one exists, either. We emphasize that our study be taken as preliminary, and highly recommend that further research on this matter be conducted on this facet and well as other facets of the diversity casting rules using sufficiently large sample-sizes, primary source data, and sufficient context-specificity as per our aforementioned recommendations before conclusions are made as to the efficacy CBS’ diversity casting rules on players of color’ initial portrayals and other relevant metrics.
 
 # Appendix
 
@@ -175,20 +195,6 @@ POC_mean_scores <- survivor_POC |> group_by(season) |> summarise(mean = mean(`Co
 White_mean_scores <- survivor_White |> group_by(season) |> summarise(mean = mean(`Compound Score`), std = sd(`Compound Score`))
 ```
 
-We want the following models:
-
-Model that measures how Attitude is explained by POC status and whether the Div_Rules were there, with the interaction term. This interaction term measures how the presence of div_rules interacts with the relationship between being poc and having a positive attitude.
-
-Model that measures how Attitude is explained by POC status and whether the Div_Rules were there, with the interaction term, as well as age. This measures how the presence of div_rules interacts with the relationship between being poc and having a positive attitude after accounting for age.
-
-Model that measures how Attitude is explained by POC status and whether the Div_Rules were there, with the interaction term, as well as age and gender. This measures how the presence of div_rules interacts with the relationship between being poc and having a positive attitude after accounting for age and gender.
-
-
-
-
-
-
-Do we want a model with race? We are not interested in breaking down by race, only POC status, but it seems sensible to have a model that measures how Attitude is explained by race status and whether the Div_Rules were there, with the interaction term, as well as age and gender. This measures how the presence of div_rules interacts with the relationship between being different races.
 
 # Summary Stats
 
