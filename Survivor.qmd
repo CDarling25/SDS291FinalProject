@@ -235,10 +235,15 @@ kbl(df_pivot_longer) |>
   footnote(general = "* Mean age of players ± Std. Deviation, ** Race as provided by the Survivor Wiki")
 ```
 
-**Assumptions**
+# Assumptions
+
+Multiple logistic regression relies on the assumptions that the response is a Bernoulli random variable, observations are independent, and the predictors show a linear relationship with the log odds of the response. Our response is a Bernoulli random variable because it takes one of two values- 1 indicating a positive portrayed attitude and 0 indicating a negative portrayed attitude. Our selection criteria for player confessionals lead to independence as players do not interact while making these statements, and player demographics are inherently independent.
+
+Among our predictors, gender, POC status, season, and presence of diversity casting rules are all binary, automatically satisfying the linearity assumption.
 
 ```{r}
 #| label: label-3
 emplogitplot1(Attitude ~ age, data = survivor, ngroups = 10)
 ```
-For age the linear assumption is violated, but this is the best we can do with a linear approximation.
+
+However, an empirical logit plot of our only numerical predictor, age, shows violation of the linearity assumption as the estimated log odds do not follow a linear trend against age. This violation persisted after exploring several transformations of the age variable, thus we chose not to transform the variable to maintain interpretability. 
