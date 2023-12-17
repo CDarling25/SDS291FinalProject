@@ -246,4 +246,45 @@ Among our predictors, gender, POC status, season, and presence of diversity cast
 emplogitplot1(Attitude ~ age, data = survivor, ngroups = 10)
 ```
 
-However, an empirical logit plot of our only numerical predictor, age, shows violation of the linearity assumption as the estimated log odds do not follow a linear trend against age. This violation persisted after exploring several transformations of the age variable, thus we chose not to transform the variable to maintain interpretability. 
+However, an empirical logit plot of our only numerical predictor, age, shows violation of the linearity assumption as the estimated log odds follow a curved trend against age. This violation persisted after exploring several transformations of the age variable, thus we chose not to transform the variable to maintain interpretability. 
+
+# Model Selection
+
+To assess the significance of our model, we conducted a likelihood ratio test under the hypotheses 
+$$H_0: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0$$
+
+$$H_A: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + \\ \beta_2Div\_Rules_i + \beta_3Age_i+ \beta_4Gender_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i$$
+
+```{r}
+#| label: tbl-full-anova
+#| tbl-cap: "Likelihood Ratio Test Results for Full Model"
+#| echo: false
+#| warning: false
+
+survivor.null = glm(Attitude ~ 1, data = survivor, family = "binomial")
+
+full.test = anova(survivor.null, survivor.model, test = "Chisq")
+
+kable(broom::tidy(full.test),
+      col.names = c("Model", "Resid. DF", "Resid. Deviance", "DF", "Deviance", "P-Value"), digits = 2)
+```
+
+To assess the significance of age and gender in our model, we conducted a second likelihood ratio test under the hypotheses
+
+$$H_0: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + \\ \beta_2Div\_Rules_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i$$
+
+$$H_A: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + \\ \beta_2Div\_Rules_i + \beta_3Age_i+ \beta_4Gender_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i$$
+
+```{r}
+#| label: tbl-reduced-anova
+#| tbl-cap: "Likelihood Ratio Test Results for Reduced Model"
+#| echo: false
+#| warning: false
+
+survivor.minimal = glm(Attitude ~ poc * div_rules + season, data = survivor, family = "binomial")
+
+minimal.test = anova(survivor.minimal, survivor.model, test = "Chisq")
+
+kable(broom::tidy(minimal.test),
+      col.names = c("Model", "Resid. DF", "Resid. Deviance", "DF", "Deviance", "P-Value"), digits = 2)
+```
