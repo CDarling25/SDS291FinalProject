@@ -4,6 +4,7 @@ author: "Laura Edwards, Cameron Darling, Mags McLaughlin, and Natalie Szewczyk"
 format:
   pdf:
     fig-pos: H
+    
 editor: visual
 output:
   pdf_document:
@@ -18,8 +19,6 @@ bibliography: citations.bib
 #| include: false
 #| warning: false
 
-knitr::opts_chunk$set(fig.pos = "H", out.extra = "")
-
 library(tidyverse)
 library(AMR)
 library(Stat2Data)
@@ -27,6 +26,8 @@ library(kableExtra)
 survivor <- read_csv('eval.csv')
 survivor <- survivor[-106, ]
 survivor$age_adj <- survivor$age - 18
+
+
 ```
 
 # Abstract
@@ -193,6 +194,8 @@ Overall, we consider our study to be a preliminary investigation into one aspect
 
 ## Demographics of Study Population
 
+See @tbl-summary-stats
+
 ```{r}
 #| label: tbl-summary-stats
 #| tbl-cap: "Demographic Characteristics of the Players in the Study Population"
@@ -222,16 +225,13 @@ df <- data.frame(Gender = "",
 df_footnote <- df
 colnames(df_footnote) = c("Gender","Male - no. (%)", "Female - no. (%)", "Age - yr.*", "All", "Race - no (%)**", "Asian/Pacific Islander", "Black", "Hispanic or Latino", "White", "Season - no. (%)", "36", "37", "38", "39", "40","41","42","43","44", "45")
 df_pivot_longer <- df_footnote |> pivot_longer(cols = c(1:21), names_to = "Characteristic", values_to = "Value") 
-kbl(df_pivot_longer) |>
-  kable_styling("striped", full_width = F) |> 
+kbl(df_pivot_longer, position = "h!") |>
+  kable_styling("striped", full_width = F, latex_options = "HOLD_position") |> 
   row_spec(0, bold = T, color = "white", background = "black") |>
   row_spec(c(1, 4, 6, 11), bold = T) |>
   footnote(general = "* Mean age of players ± Std. Deviation, ** Race as provided by the Survivor Wiki")
 ```
 
-See @tbl-summary-stats
-
-\newpage
 \newpage
 
 ## Assumptions
@@ -250,9 +250,10 @@ emplogitplot1(Attitude ~ age, data = survivor, ngroups = 10)
 However, an empirical logit plot of our only numerical predictor, age, shows violation of the linearity assumption as the estimated log odds follow a curved trend against age. This violation persisted after exploring several transformations of the age variable, thus we chose not to transform the variable to maintain model interpretability. 
 
 \newpage
-\newpage
 
 ## Regression Output
+
+See @tbl-regression-output
 
 ```{r}
 #| label: tbl-regression-output
@@ -264,10 +265,9 @@ survivor.model.tbl <- as.data.frame(survivor.model.tbl)
 survivor.model.tbl <- survivor.model.tbl[c(1:13, 15), c(2:5)]
 rownames(survivor.model.tbl) <- c("Intercept", "POC", "Div_Rules", "Age", "Gender", "Season 37", "Season 38", "Season 39", "Season 40", "Season 41", "Season 42", "Season 43", "Season 44", "POC:Div_Rules")
 kable(survivor.model.tbl, digits = 2,
-      col.names = c("Estimate", "Std. Error", "z-Statistic", "P-Value"))
+      col.names = c("Estimate", "Std. Error", "z-Statistic", "P-Value"), position = "h!") |>
+  kable_styling(latex_options = "HOLD_position")
 ```
-
-See @tbl-regression-output
 
 ```{r}
 #| echo: false
@@ -286,6 +286,8 @@ poc.post.ci[1]*100 - 100
 poc.post.ci[2]*100 - 100
 ```
 
+@tbl-or-calculations displays the results of our calculations for the odds ratios pre- and post- diversity rules for POC v. White players having initial, positive portrayed attitudes 
+
 ```{r}
 #| label: tbl-or-calculations
 #| tbl-cap: "Odds Ratio of Initial, Positive Portrayed Attitude for POC v. White Player with 95% Confidence Intervals"
@@ -294,14 +296,11 @@ poc.post.ci[2]*100 - 100
 odds.ratios.df <- data.frame('Diversity Casting Rules Status*' = c('Pre','Post'), 
                              'Odds Ratio [95% CI]*' = c("-37.65 [-76.59, 66.08]", "-11.26 [-70.37, 165.68]"))
 colnames(odds.ratios.df) <- c('Diversity Casting Rules Status', 'Odds Ratio [95% CI]*')
-kbl(odds.ratios.df) |>
-  kable_styling("striped", full_width = F) |> 
+kbl(odds.ratios.df, position = "h!") |>
+  kable_styling("striped", full_width = F, latex_options = "HOLD_position") |> 
   row_spec(0, bold = T, color = "white", background = "black")
 ```
 
-@tbl-or-calculations displays the results of our calculations for the odds ratios pre- and post- diversity rules for POC v. White players having initial, positive portrayed attitudes 
-
-\newpage 
 \newpage
 
 ## Model Significance
@@ -328,6 +327,7 @@ We consider the numbered models for the ANOVA tests in this section:
 \begin{equation} Gender_i = \begin{cases} 1 & \text{ if } i \text{ person identifies as a man} \\ 0 & \text{ if } i \text{ person identifies as a woman} \end{cases} \end{equation}
 ```
 
+To assess the overall significance of our full model, we conducted a likelihood ratio test comparing Models (1) and (4) in @tbl-full-anova. 
 
 ```{r}
 #| label: tbl-full-anova
@@ -344,11 +344,11 @@ full.test.df <- data.frame(Model = c("1","4"),
                            Deviance = c('', '11.366'),
                            'P-Value' = c('','0.5802'))
 colnames(full.test.df) <- c("Model", "Residual Degrees of Freedom", "Residual Deviance", "Degrees of Freedom", "Deviance", "P-Value")
-kbl(full.test.df) |>
-  kable_styling(full_width = F)
+kbl(full.test.df, position = "h!") |>
+  kable_styling(full_width = F, latex_options = "HOLD_position")
 ```
 
-To assess the overall significance of our full model, we conducted a likelihood ratio test comparing Models (1) and (4) in @tbl-full-anova. 
+To assess the significance of age predictors in our model, we conducted a likelihood ratio test comparing Models (1) and (2) in @tbl-reduced-anova-age. 
 
 ```{r}
 #| label: tbl-reduced-anova-age
@@ -369,11 +369,11 @@ minimal.age.test.df <- data.frame(Model = c("1","2"),
                            Deviance = c('', '0.10453'),
                            'P-Value' = c('','0.7465'))
 colnames(minimal.age.test.df) <- c("Model", "Residual Degrees of Freedom", "Residual Deviance", "Degrees of Freedom", "Deviance", "P-Value")
-kbl(minimal.age.test.df) |>
-  kable_styling(full_width = F)
+kbl(minimal.age.test.df, position = "h!") |>
+  kable_styling(full_width = F, latex_options = "HOLD_position")
 ```
 
-To assess the significance of age predictors in our model, we conducted a likelihood ratio test comparing Models (1) and (2) in @tbl-reduced-anova-age. 
+To assess the significance of gender predictor in our model, we conducted a likelihood ratio test comparing Models (1) and (3) in @tbl-reduced-anova-gender.
 
 ```{r}
 #| label: tbl-reduced-anova-gender
@@ -394,14 +394,10 @@ minimal.gender.test.df <- data.frame(Model = c("1","3"),
                            Deviance = c('', '0.85356'),
                            'P-Value' = c('','0.3555'))
 colnames(minimal.gender.test.df) <- c("Model", "Residual Degrees of Freedom", "Residual Deviance", "Degrees of Freedom", "Deviance", "P-Value")
-kbl(minimal.gender.test.df) |>
-  kable_styling(full_width = F)
+kbl(minimal.gender.test.df, position = "h!") |>
+  kable_styling(full_width = F, latex_options = "HOLD_position")
 ```
 
-To assess the significance of gender predictor in our model, we conducted a likelihood ratio test comparing Models (1) and (3) in @tbl-reduced-anova-gender.
-
-\newpage
-\newpage
 \newpage
 
 # References
