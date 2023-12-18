@@ -25,6 +25,8 @@ survivor$age_adj <- survivor$age - 18
 
 # Abstract
 
+The reality TV competition show Survivor has been on the air for over 20 years, however it has faced significant criticism for its history of predominantly white casts. In the aftermath of the death of George Floyd and the broader Black Lives Matter movement, the cable network CBS announced that they had implemented a diversity ruling stating at least 50% of each season's cast must be players of color. The purpose of this analysis is to determine whether or not the diversity ruling has had any effect on each player's portrayed initial attitude towards the game by looking at the differences from players attitudes before and after the implementation of the ruling. We did so by completing a logistic regression analysis on data involving demographics of players (including age, gender, and POC status) and their first significant confessionals from seasons 36-45, wherein seasons 36-40 are before the diversity ruling and 41-45 are the seasons after. Ultimately, our study did not find a significant relationship between the implementation of the diversity casting rules and the odds that a player of color had an initially positive portrayed attitude. 
+
 # Introduction
 
 Survivor is one of cable television’s longest-running reality competition shows. Advertised as a ‘microcosm for our real world’ by executive producer Jeff Probst (Wigler 2019), every season, about 20 people are taken to an exotic location, given little supplies, and divided into tribes. They are then tasked with creating a new society amongst themselves while competing in physical and mental challenges, voting each other out along the way, each player working towards the goal of being the last person remaining to win one million dollars. 
@@ -120,31 +122,32 @@ We hypothesize that after the implementation of diversity casting rules, the lik
 # Results
 
 ```{r}
-#| label: create-model
+#| label: create-model-and-interpret
 #| include: false
 survivor$season <- as.factor(survivor$season)
 survivor.model <- glm(Attitude ~ poc * div_rules + age_adj + gender + season, data = survivor, family = "binomial")
 summary(survivor.model)
 ```
-We find that for players of the same age and gender playing on the same season pre-diversity rule implementation, the predicted odds of a player's first significant confessional portraying a positive attitude are 34.6% lower for players of color than white players ($95\% \text{ CI}: 76.6\% \text{ lower}, 66.1\% \text{ higher}$). For players of the same age and gender playing on the same season post-diversity rule implementation, the predicted odds of a player's first significant confessional portraying a positive attitude are 11.3% lower for players of color than white players ($95\% \text{C I}: 70.4\% \text{ lower}, 166\% \text{ higher}$). Comparing seasons pre- and post-diversity rule implementation, we find that the predicted odds ratio for POC versus White players becomes smaller after the diversity rules are implemented, suggesting that the diversity rules have a positive association with the odds that a player of color has a positive, initially portrayed attitude in their first significant confessional.
+We find that for players of the same age and gender playing on the same season pre-diversity rule implementation, the predicted odds of a player's first significant confessional portraying a positive attitude are 34.6% lower for players of color than white players ($95\% \text{ CI}: 76.6\% \text{ lower}, 66.1\% \text{ higher}$). For players of the same age and gender playing on the same season post-diversity rule implementation, the predicted odds of a player's first significant confessional portraying a positive attitude are 11.3% lower for players of color than white players ($95\% \text{C I}: 70.4\% \text{ lower}, 166\% \text{ higher}$). Calculations for these difference of odds are included in the [Appendix](#appendix). Comparing seasons pre- and post-diversity rule implementation, we find that the predicted odds ratio for POC versus White players becomes smaller after the diversity rules are implemented, suggesting that the diversity rules have a positive association with the odds that a player of color has a positive, initially portrayed attitude in their first significant confessional.
 
-The results of our logistic regression are tabulated in @tbl-regression-output. 
+The results of our logistic regression expressed in odds ratios are tabulated in @tbl-regression-output-odds-ratios. Logit estimates are presented in the [Appendix](#appendix) in @tbl-regression-output. Odds ratio estimates were converted from logit estimates by exponentiating the logit estimate. 
+
 ```{r}
-#| label: tbl-regression-output
-#| tbl-cap: "Regression Output of Model Considering Player POC Status, Age, Gender, Season, and Diversity Rules Effect on Log Odds of Initial, Portrayed Attitude of Player"
+#| label: tbl-regression-output-odds-ratios
+#| tbl-cap: "Regression Output of Model Considering Player POC Status, Age, Gender, Season, and Diversity Rules Effect on Odds of Initial, Portrayed Attitude of Player in Odds Ratios"
 #| echo: false
 
 survivor.model.tbl <- broom::tidy(survivor.model) 
 survivor.model.tbl <- as.data.frame(survivor.model.tbl)
 survivor.model.tbl <- survivor.model.tbl[c(1:13, 15), c(2:5)]
+survivor.model.tbl$estimate <- exp(survivor.model.tbl$estimate)
 rownames(survivor.model.tbl) <- c("Intercept", "POC", "Div_Rules", "Age", "Gender", "Season 37", "Season 38", "Season 39", "Season 40", "Season 41", "Season 42", "Season 43", "Season 44", "POC:Div_Rules")
 kable(survivor.model.tbl, digits = 2,
       col.names = c("Estimate", "Std. Error", "z-Statistic", "P-Value"))
 ```
+All of the individual coefficients have p-values greater than the 95% confidence threshold of $p=0.05$. For our predictors of interest in relation to our initial hypotheses–the POC status of the player, the implementation of the diversity rules, as well as a player’s age and gender–this result indicates that none of these predictors when considered together along with our other predictors controlling for potential season editing clusters were associated with changes in the log odds of an initial, portrayed positive attitude for a player. Our interaction term's, `POC:Div_Rules`, coefficient, which measures how the implementation of the diversity casting rules effects the relationship of a player's POC status on their odds of having a initial, positive portrayed attitude, is 1.42, indicating that the implementation of the diversity casting rules was associated with a 1.42 times higher odds that a POC player would have a positive initial portrayed attitude.
 
-All of the individual coefficients have p-values greater than the 95% confidence threshold of $p=0.05$. For our predictors of interest in relation to our initial hypotheses–the POC status of the player, the implementation of the diversity rules, as well as a player’s age and gender–, this result indicates that none of these predictors when considered together along with our other predictors controlling for potential season editing clusters were associated with changes in the log odds of an initial, portrayed positive attitude for a player. 
-
-Supporting the results of our Wald tests on the individual coefficients, we also find using a likelihood ratio test that the overall model is not significant ($p=0.58$), and that an intercept-only model is sufficient to predict the log odds of an initial positive portrayed attitude of a player. Comparing preliminary models without age and gender predictors to our full model for this analysis, we also found that the addition of these two predictors was insignificant ($p = 0.6304$) in meaningfully improving model fit to the data. Consequently, age and gender are also insignificant as individual predictors in our final model ($p = 0.7924; p = 0.3657$). See the Appendix for full results of regression analyses for the reduced models utilizing the age and gender predictors. 
+Supporting the results of our Wald tests on the individual coefficients, we also find using a likelihood ratio test that the overall model is not significant ($p=0.58$), and that an intercept-only model is sufficient to predict the log odds of an initial positive portrayed attitude of a player. Comparing preliminary models, one excluding age and one excluding the gender predictor, we also found that these two predictors did not meaningfully improve model fit to the data ($p = 0.7465; p = 0.3555$). Consequently, age and gender are also insignificant as individual predictors in our final model ($p = 0.7924; p = 0.3657$). See the [Appendix](#appendix) for full results of likelihood ratio tests comparing our reduced and full models with varying combinations of predictors.
 
 *add table that shows odds ratios which are much more interpretable than the log odds table that we have*
 
@@ -177,6 +180,8 @@ Overall, we consider our study to be a preliminary investigation into one aspect
 
 # Appendix
 
+# what are these?
+
 ```{r}
 #| label: Summary-stats-1
 #| include: false
@@ -196,10 +201,9 @@ POC_mean_scores <- survivor_POC |> group_by(season) |> summarise(mean = mean(`Co
 White_mean_scores <- survivor_White |> group_by(season) |> summarise(mean = mean(`Compound Score`), std = sd(`Compound Score`))
 ```
 
+## Demographics of Study Population
 
-# Summary Stats
-
-## Demographics
+See @tbl-summary-stats
 
 ```{r}
 #| label: tbl-summary-stats
@@ -235,8 +239,9 @@ kbl(df_pivot_longer) |>
   row_spec(c(1, 4, 6, 11), bold = T) |>
   footnote(general = "* Mean age of players ± Std. Deviation, ** Race as provided by the Survivor Wiki")
 ```
+\newpage
 
-# Assumptions
+## Assumptions
 
 Multiple logistic regression relies on the assumptions that the response is a Bernoulli random variable, observations are independent, and the predictors show a linear relationship with the log odds of the response. Our response is a Bernoulli random variable because it takes one of two values- 1 indicating a positive portrayed attitude and 0 indicating a negative portrayed attitude. Our selection criteria for player confessionals lead to independence as players do not interact while making these statements, and player demographics are inherently independent.
 
@@ -248,49 +253,149 @@ Among our predictors, gender, POC status, season, and presence of diversity cast
 emplogitplot1(Attitude ~ age, data = survivor, ngroups = 10)
 ```
 
-However, an empirical logit plot of our only numerical predictor, age, shows violation of the linearity assumption as the estimated log odds follow a curved trend against age. This violation persisted after exploring several transformations of the age variable, thus we chose not to transform the variable to maintain interpretability. 
+However, an empirical logit plot of our only numerical predictor, age, shows violation of the linearity assumption as the estimated log odds follow a curved trend against age. This violation persisted after exploring several transformations of the age variable, thus we chose not to transform the variable to maintain model interpretability. 
 
-# Model Selection
+## Regression Output
 
-To assess the significance of our model, we conducted a likelihood ratio test under the hypotheses 
-$$H_0: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0$$
+See @tbl-regression-output
+```{r}
+#| label: tbl-regression-output
+#| tbl-cap: "Regression Output of Model Considering Player POC Status, Age, Gender, Season, and Diversity Rules Effect on Log Odds of Initial, Portrayed Attitude of Player"
+#| echo: false
 
-$$H_A: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + $$
-$$\beta_2Div\_Rules_i + \beta_3Age_i+ \beta_4Gender_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i$$
+survivor.model.tbl <- broom::tidy(survivor.model) 
+survivor.model.tbl <- as.data.frame(survivor.model.tbl)
+survivor.model.tbl <- survivor.model.tbl[c(1:13, 15), c(2:5)]
+rownames(survivor.model.tbl) <- c("Intercept", "POC", "Div_Rules", "Age", "Gender", "Season 37", "Season 38", "Season 39", "Season 40", "Season 41", "Season 42", "Season 43", "Season 44", "POC:Div_Rules")
+kable(survivor.model.tbl, digits = 2,
+      col.names = c("Estimate", "Std. Error", "z-Statistic", "P-Value"))
+```
 
+\newpage 
 
+## Model Significance
+
+We consider the numbered models for the ANOVA tests in this section:
+
+(1) $logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0$
+
+(2) $logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + \beta_2Div\_Rules_i + \beta_3Age_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i;\beta_4 = 0$
+
+```{=tex}
+\begin{equation} Gender_i = \begin{cases} 1 & \text{ if } i \text{ person identifies as a man} \\ 0 & \text{ if } i \text{ person identifies as a woman} \end{cases} \end{equation}
+```
+
+(3) $logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + \beta_2Div\_Rules_i+ \beta_4Gender_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i; \beta_3 = 0$
+
+```{=tex}
+\begin{equation} Gender_i = \begin{cases} 1 & \text{ if } i \text{ person identifies as a man} \\ 0 & \text{ if } i \text{ person identifies as a woman} \end{cases} \end{equation}
+```
+
+(4) $logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + \beta_2Div\_Rules_i + \beta_3Age_i+ \beta_4Gender_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i$
+
+```{=tex}
+\begin{equation} Gender_i = \begin{cases} 1 & \text{ if } i \text{ person identifies as a man} \\ 0 & \text{ if } i \text{ person identifies as a woman} \end{cases} \end{equation}
+```
+
+\newpage
+
+To assess the overall significance of our full model, we conducted a likelihood ratio test comparing Models (1) and (4) in @tbl-full-anova. 
+
+To assess the significance of age predictors in our model, we conducted a likelihood ratio test comparing Models (1) and (2) in @tbl-reduced-anova-age. 
+
+To assess the significance of gender predictor in our model, we conducted a likelihood ratio test comparing Models (1) and (3) in @tbl-reduced-anova-gender.
+
+\newpage
 ```{r}
 #| label: tbl-full-anova
 #| tbl-cap: "Likelihood Ratio Test Results for Full Model"
 #| echo: false
 #| warning: false
-#| column: page
 
 survivor.null = glm(Attitude ~ 1, data = survivor, family = "binomial")
-
-full.test = broom::tidy(anova(survivor.null, survivor.model, test = "Chisq"))
-
-kable(full.test,
-      col.names = c("Model","Resid. DF", "Resid. Deviance", "DF", "Deviance", "P-Value"), digits = 2)
+full.test <- anova(survivor.null, survivor.model, test = "Chisq")
+full.test.df <- data.frame(Model = c("1","4"),
+                           'Residual Degrees of Freedom' = c("183", "170"),
+                           'Residual Deviance' = c("206.94", "195.57"), 
+                           'Degrees of Freedom' = c('', '13'),
+                           Deviance = c('', '11.366'),
+                           'P-Value' = c('','0.5802'))
+colnames(full.test.df) <- c("Model", "Residual Degrees of Freedom", "Residual Deviance", "Degrees of Freedom", "Deviance", "P-Value")
+kbl(full.test.df) |>
+  kable_styling(full_width = F)
 ```
-
-To assess the significance of age and gender in our model, we conducted a second likelihood ratio test under the hypotheses
-
-$$H_0: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + $$ $$\beta_2Div\_Rules_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i$$
-
-$$H_A: logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + $$ $$\beta_2Div\_Rules_i + \beta_3Age_i+ \beta_4Gender_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i$$
-
 ```{r}
-#| label: tbl-reduced-anova
-#| tbl-cap: "Likelihood Ratio Test Results for Reduced Model"
+#| label: tbl-reduced-anova-age
+#| tbl-cap: "Likelihood Ratio Test Results for Reduced Model with additional Age Predictor Only"
 #| echo: false
 #| warning: false
-#| column: page
 
-survivor.minimal = glm(Attitude ~ poc * div_rules + season, data = survivor, family = "binomial")
+survivor.minimal <- glm(Attitude ~ poc * div_rules + season, data = survivor, family = "binomial")
 
-minimal.test = broom::tidy(anova(survivor.minimal, survivor.model, test = "Chisq"))
+survivor.age <- glm(Attitude ~ poc * div_rules + season + age_adj, data = survivor, family = "binomial")
 
-kable(minimal.test,
-      col.names = c("Model", "Resid. DF", "Resid. Deviance", "DF", "Deviance", "P-Value"), digits = 2)
+minimal.age.test <- anova(survivor.minimal, survivor.age, test = "Chisq")
+
+minimal.age.test.df <- data.frame(Model = c("1","2"),
+                           'Residual Degrees of Freedom' = c("172", "171"),
+                           'Residual Deviance' = c("196.50", "196.39"), 
+                           'Degrees of Freedom' = c('', '1'),
+                           Deviance = c('', '0.10453'),
+                           'P-Value' = c('','0.7465'))
+colnames(minimal.age.test.df) <- c("Model", "Residual Degrees of Freedom", "Residual Deviance", "Degrees of Freedom", "Deviance", "P-Value")
+kbl(minimal.age.test.df) |>
+  kable_styling(full_width = F)
 ```
+```{r}
+#| label: tbl-reduced-anova-gender
+#| tbl-cap: "Likelihood Ratio Test Results for Reduced Model with additional Gender Predictor Only"
+#| echo: false
+#| warning: false
+
+survivor.minimal <- glm(Attitude ~ poc * div_rules + season, data = survivor, family = "binomial")
+
+survivor.gender <- glm(Attitude ~ poc * div_rules + season + gender, data = survivor, family = "binomial")
+
+minimal.gender.test <- anova(survivor.minimal, survivor.gender, test = "Chisq")
+
+minimal.gender.test.df <- data.frame(Model = c("1","3"),
+                           'Residual Degrees of Freedom' = c("172", "171"),
+                           'Residual Deviance' = c("196.50", "195.64"), 
+                           'Degrees of Freedom' = c('', '1'),
+                           Deviance = c('', '0.85356'),
+                           'P-Value' = c('','0.3555'))
+colnames(minimal.gender.test.df) <- c("Model", "Residual Degrees of Freedom", "Residual Deviance", "Degrees of Freedom", "Deviance", "P-Value")
+kbl(minimal.gender.test.df) |>
+  kable_styling(full_width = F)
+```
+\newpage
+
+```{r}
+#| echo: false
+#| include: false
+# difference in odds for poc v. white players pre- diversity rules and 95% CI
+odds.poc.pre <- exp(coef(survivor.model)[2])
+100*odds.poc.pre - 100
+poc.pre.ci <- exp(coef(survivor.model)[2] + c(-1, 1)*qnorm(0.975)*sqrt(vcov(survivor.model)[2, 2]))
+poc.pre.ci[1]*100 - 100
+poc.pre.ci[2]*100 - 100
+# difference in odds for poc v. white players post- diversity rules and 95% CI
+odds.poc.post <- exp(coef(survivor.model)[2] + coef(survivor.model)[15])
+100*odds.poc.post - 100
+poc.post.ci <- exp((coef(survivor.model)[2] + coef(survivor.model)[15]) + c(-1, 1)*qnorm(0.975)*sqrt(vcov(survivor.model)[2, 2] + vcov(survivor.model)[15,15] + 2*vcov(survivor.model)[2,15]))
+poc.post.ci[1]*100 - 100
+poc.post.ci[2]*100 - 100
+```
+@tbl-or-calculations displays the results of our calculations for the odds ratios pre- and post- diversity rules for POC v. White players having initial, positive portrayed attitudes 
+```{r}
+#| label: tbl-or-calculations
+#| tbl-cap: "Odds Ratio of Initial, Positive Portrayed Attitude for POC v. White Player with 95% Confidence Intervals"
+#| echo: false
+odds.ratios.df <- data.frame('Diversity Casting Rules Status*' = c('Pre','Post'), 
+                             'Odds Ratio [95% CI]*' = c("-37.65 [-76.59, 66.08]", "-11.26 [-70.37, 165.68]"))
+colnames(odds.ratios.df) <- c('Diversity Casting Rules Status', 'Odds Ratio [95% CI]*')
+kbl(odds.ratios.df) |>
+  kable_styling("striped", full_width = F) |> 
+  row_spec(0, bold = T, color = "white", background = "black")
+```
+
