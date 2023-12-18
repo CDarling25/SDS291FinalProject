@@ -71,7 +71,7 @@ survivor <- survivor |> mutate(div_rules_category = ifelse(div_rules == 0, "Pre-
 survivor |> ggplot(aes(x = poc_category, y = `Compound Score`, color = poc_category)) + 
   geom_boxplot() + 
   facet_grid(~factor(survivor$div_rules_category, levels=c("Pre-Diversity Rules", "Post-Diversity Rules"))) + 
-  theme(legend.position = "none")
+  theme(legend.position = "none") + labs(x= "POC Status")
   
 ```
 
