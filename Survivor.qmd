@@ -1,18 +1,24 @@
 ---
 title: "SDS 291 Final Project"
 author: "Laura Edwards, Cameron Darling, Mags McLaughlin, and Natalie Szewczyk"
-format: pdf
+format:
+  pdf:
+    fig-pos: H
 editor: visual
 output:
   pdf_document:
     fig_width: 7
     fig_height: 6
     fig_caption: true
+bibliography: citations.bib
 ---
 
 ```{r}
 #| label: load-packages-and-data
 #| include: false
+#| warning: false
+
+knitr::opts_chunk$set(fig.pos = "H", out.extra = "")
 
 library(tidyverse)
 library(AMR)
@@ -29,17 +35,17 @@ The reality TV competition show Survivor has been on the air for over 20 years, 
 
 # Introduction
 
-Survivor is one of cable television’s longest-running reality competition shows. Advertised as a ‘microcosm for our real world’ by executive producer Jeff Probst (Wigler 2019), every season, about 20 people are taken to an exotic location, given little supplies, and divided into tribes. They are then tasked with creating a new society amongst themselves while competing in physical and mental challenges, voting each other out along the way, each player working towards the goal of being the last person remaining to win one million dollars. 
+Survivor is one of cable television’s longest-running reality competition shows. Advertised as a ‘microcosm for our real world’ by executive producer Jeff Probst [@wigler_survivor_2019], every season, about 20 people are taken to an exotic location, given little supplies, and divided into tribes. They are then tasked with creating a new society amongst themselves while competing in physical and mental challenges, voting each other out along the way, each player working towards the goal of being the last person remaining to win one million dollars. 
 
-Being a competition show focused heavily on the social interactions of its players, the topic of race and its impact on player experience and player outcomes has been discussed at length. Excluding Season 13, Cook’s Island, in which players were segregated by race as part of the season’s theme, Survivor’s season casts have been historically dominated by white players. This likely contributed to many players of color having negative experiences with their castmates going unaddressed, as detailed in an episode of Morning Edition by NPR (Deggan 2020), as well as a Zoom roundtable featuring several past black Survivor players. 
+Being a competition show focused heavily on the social interactions of its players, the topic of race and its impact on player experience and player outcomes has been discussed at length. Excluding Season 13, Cook’s Island, in which players were segregated by race as part of the season’s theme, Survivor’s season casts have been historically dominated by white players. This likely contributed to many players of color having negative experiences with their castmates going unaddressed, as detailed in an episode of Morning Edition by NPR [@deggans_right_2020], as well as a Zoom roundtable featuring several past black Survivor players. 
 
-As a reaction to the broader cultural reaction to the George Floyd Protests, as well as a petition released on Juneteenth 2020 from some of Survivor’s past black players, in November of 2020, CBS announced that beginning in Season 41, 50% of the Survivor castaways would be POC. Diversity measures like CBS’ have been implemented in workplaces before, and have been shown to improve firm performance, team creativity, among other similar metrics in a wide variety of contexts (Gomez et al. 2019, Kumar & Gupta 2023). However, do these same benefits translate at a qualitative level in a reality television context? Our study aims to, in part, evaluate the efficacy of the 2020 Survivor diversity initiative on improving the portrayal of POC players themselves, by addressing the following questions: is there a relationship between whether or not a player had a positive, portrayed* initial attitude towards the game and whether or not the player’s season occurred before or after the diversity casting rules were implemented? Do other social demographic factors, such as age and gender of a player, moderate this relationship, if it exists?
+As a reaction to the broader cultural reaction to the George Floyd Protests, as well as a petition released on Juneteenth 2020 from some of Survivor’s past black players, in November of 2020, CBS announced that beginning in Season 41, 50% of the Survivor castaways would be POC. Diversity measures like CBS’ have been implemented in workplaces before, and have been shown to improve firm performance, team creativity, among other similar metrics in a wide variety of contexts [@gomez_diversity_2019; @kumar_impact_2023]. However, do these same benefits translate at a qualitative level in a reality television context? Our study aims to, in part, evaluate the efficacy of the 2020 Survivor diversity initiative on improving the portrayal of POC players themselves, by addressing the following questions: is there a relationship between whether or not a player had a positive, *portrayed* initial attitude towards the game and whether or not the player’s season occurred before or after the diversity casting rules were implemented? Do other social demographic factors, such as age and gender of a player, moderate this relationship, if it exists?
 
 # Methods
 
 ## Data Source
 
-Our dataset combines existing data gathered by Survivor fans from the ‘castaway_details’ dataset from the survivoR R Package on GitHub with transcribed confessionals transcripts and sentiment analysis done by our team. The ‘castaway_details’  dataset contains details on a player’s gender, POC identity, date of birth, and other detailed demographic information which is not relevant to this study. Per the package author, this demographic information was collected from the Survivor Wiki, Wikipedia, and from individual package contributors.
+Our dataset combines existing data gathered by Survivor fans from the ‘castaway_details’ dataset from the survivoR R Package on GitHub with transcribed confessionals transcripts and sentiment analysis done by our team. The ‘castaway_details’ dataset contains details on a player’s gender, POC identity, date of birth, and other detailed demographic information which is not relevant to this study. Per the package author, this demographic information was collected from the Survivor Wiki, Wikipedia, and from individual package contributors.
 
 ## Study Population
 
@@ -56,6 +62,7 @@ Our team studied the 184 players’ confessionals from Season 36-45, the five se
 #| label: Data-Cleaning
 #| echo: false
 #| fig-cap: "Average Compound Scores of 184 Players from Survivor, Pre- and Post- Implementation of Diversity Casting Rules"
+#| warning: false
 
 #creating a categorical poc variable
 survivor <- survivor |> mutate(poc_category = ifelse(poc == 1, "POC", "White"))
@@ -78,18 +85,20 @@ We used a player’s first confessional which matched the criteria outlined in F
 ```{r, out.width = "450px"}
 #| label: consort-diagram
 #| fig-cap: "Confessional Selection Diagram"
+#| echo: false
 knitr::include_graphics("Flowchart.jpeg")
 ```
-Four players lacked confessionals which met the guidelines outlined in Figure and were coded as negative by default, as our team took a lack of portrayal as having a negative impact on a player’s portrayal. 
+Four players lacked confessionals which met the guidelines outlined in Figure I and were coded as negative by default, as our team took a lack of portrayal as having a negative impact on a player’s portrayal. 
 
 ## Dataset
 
-The combined dataset includes information on the gender, age, race, name, and POC status of each player in addition to their confessional, sentiment analysis score, and portrayed initial attitude. @fig-3 is a visual representation of the portrayed attitudes of poc and non-POC players pre- and post- diversity rules. Visually, the stacked bar plots show an increase in the percentage of POC players in the casts post-diversity rules as expected. Of these POC players, the proportion whose initial, portrayed attitudes were analyzed as positive seems to have increased compared to before the diversity casting rules were implemented. However, this increase in positive portrayal also appears with white players post- diversity casting rules as well. This suggests the rough idea that perhaps, the diversity rules may have had no or a very small effect on the nature in which POC players’ initial attitudes were portrayed, although this difference, or lack thereof, will be explored more formally in our statistical analysis.
+The combined dataset includes information on the gender, age, race, name, and POC status of each player in addition to their confessional, sentiment analysis score, and portrayed initial attitude. @fig-3 is a visual representation of the portrayed attitudes of POC and non-POC players pre- and post- diversity rules. Visually, the stacked bar plots show an increase in the percentage of POC players in the casts post-diversity rules as expected. Of these POC players, the proportion whose initial, portrayed attitudes were analyzed as positive seems to have increased compared to before the diversity casting rules were implemented. However, this increase in positive portrayal also appears with white players post- diversity casting rules as well. This suggests the rough idea that perhaps, the diversity rules may have had no or a very small effect on the nature in which POC players’ initial attitudes were portrayed, although this difference, or lack thereof, will be explored more formally in our statistical analysis.
 
 ```{r}
 #| label: fig-3
 #| echo: false
 #| fig-cap: "Positive and Negative Portrayed Attitudes of 184 Players from Survivor, Pre- and Post- Implementation of Diversity Casting Rules"
+#| warning: false
 
 ggplot(data = survivor, aes(x = as.factor(poc), fill = as.factor(Attitude))) +
   geom_bar(aes(y = (..count..)/sum(..count..))) + 
@@ -155,13 +164,13 @@ Supporting the results of our Wald tests on the individual coefficients, we also
 
 Following the cultural reckoning caused by the broad social movement associated with the George Floyd Protests of 2020, many workplaces and businesses responded by implementing diversity, equity, and inclusion (DEI) initiatives. Evaluating the efficacy of these DEI initiatives is an important task and challenge for organizations as they seek to improve workplace equity in the future. 
 
-Previous research has shown the importance of diverse racial representation in fiction-based media on people’s identity development https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4900900/, response to advertising, and . The present study extends upon this work by attempting to discern the effects of diverse racial representation on the portrayal of reality competition show players of color from a media consumer perspective. 
+Previous research has shown the importance of diverse racial representation in fiction-based media on people’s identity development [@ellithorpe_wanting_2016], response to advertising, and . The present study extends upon this work by attempting to discern the effects of diverse racial representation on the portrayal of reality competition show players of color from a media consumer perspective. 
 
-In concurrence with the findings of related literature of the positive effects of DEI initiatives on people of color in workplace contexts (https://www.emerald.com/insight/content/doi/10.1108/17554211111162471/full/html), our study found that after the diversity casting rules were implemented, the difference in difference of the odds of a player of color having an initial positive, portrayed attitude compared to a white player had decreased. This decrease in the difference in odds suggests that increasing the percentage of players of color on a season of Survivor was associated with an increased likelihood that a player of color would be initially, positively portrayed. 
+In concurrence with the findings of related literature of the positive effects of DEI initiatives on people of color in workplace contexts [@waight_diversity_2011], our study found that after the diversity casting rules were implemented, the difference in difference of the odds of a player of color having an initial positive, portrayed attitude compared to a white player had decreased. This decrease in the difference in odds suggests that increasing the percentage of players of color on a season of Survivor was associated with an increased likelihood that a player of color would be initially, positively portrayed. 
 
-This association may be due to a variety of interacting components, such as a change in editing and storyarc strategies or a change in mindset of the players of color themselves. This association may also have implications for how Survivor studio efforts to increase Survivor viewership, as previous studies have shown that people tend to seek out media at increased rates which strengthen their in-group identification and the positivity they associate with it (https://www.communications.k-state.edu/doc/marketing-research/age-identification-social-identity-gratifications-and-television-viewing.pdf).
+This association may be due to a variety of interacting components, such as a change in editing and storyarc strategies or a change in mindset of the players of color themselves. This association may also have implications for how Survivor studio efforts to increase Survivor viewership, as previous studies have shown that people tend to seek out media at increased rates which strengthen their in-group identification and the positivity they associate with it [@harwood_age_1999].
 
-Our study’s finding of the positive association between age and the odds of a player having an initial positive, portrayed attitude disagrees with some researchers who have found negative relationships between age and job well-being (https://www.jstor.org/stable/24720284?seq=10). Our study’s finding of the positive association between being male and the odds of a player having an initial positive, portrayed attitude also disagrees with many researchers who, to their surprise, have found no differences in overall, or even increased job satisfaction in women compared to men. Discerning the mechanisms which drive job satisfaction, as well as many other work-related items, is ongoing. Our study speaks to the mechanisms at play in reality competition shows, which likely meaningfully differ from those relevant in the typical workplace due to the idiosyncratic performance demands and social dynamics in a specific reality competition show environment.
+Our study’s finding of the positive association between age and the odds of a player having an initial positive, portrayed attitude disagrees with some researchers who have found negative relationships between age and job well-being [@wilks_workplace_2013]. Our study’s finding of the positive association between being male and the odds of a player having an initial positive, portrayed attitude also disagrees with many researchers who, to their surprise, have found no differences in overall, or even increased job satisfaction in women compared to men. Discerning the mechanisms which drive job satisfaction, as well as many other work-related items, is ongoing. Our study speaks to the mechanisms at play in reality competition shows, which likely meaningfully differ from those relevant in the typical workplace due to the idiosyncratic performance demands and social dynamics in a specific reality competition show environment.
 
 
 # Limitations and Further Research
@@ -178,37 +187,17 @@ Logistic regression analysis may not be best-suited for analyzing our dataset. A
 
 Overall, we consider our study to be a preliminary investigation into one aspect in the holistic assessment of the efficacy of CBS’ diversity casting rules in Survivor. Our study found a positive association between the implementation of diversity casting rules on the odds that a player of color would have an initial, positive portrayed attitude, even after accounting for the player’s age and gender. Crucial to note, our study did not find that this association was significant; thus, while our findings do not rule out the existence of an effect of the diversity casting rules on the odds that a player of color would have an initial, positive portrayed attitude, it does not confirm that one exists, either. We emphasize that our study be taken as preliminary, and highly recommend that further research on this matter be conducted on this facet and well as other facets of the diversity casting rules using sufficiently large sample-sizes, primary source data, and sufficient context-specificity as per our aforementioned recommendations before conclusions are made as to the efficacy CBS’ diversity casting rules on players of color’ initial portrayals and other relevant metrics.
 
+\newpage
+
 # Appendix
 
-# what are these?
-
-```{r}
-#| label: Summary-stats-1
-#| include: false
-survivor_POC <- survivor |> filter(poc == 1)
-survivor_White <- survivor |> filter(poc == 0)
-num_poc_post <- sum(survivor_POC$div_rules)
-num_poc_pre <- nrow(survivor_POC) - num_poc_post
-num_white_post <- sum(survivor_White$div_rules)
-num_white_pre <- nrow(survivor_White) - num_white_post
-```
-
-
-```{r}
-#| label: Summary-stats-2
-#| include: false
-POC_mean_scores <- survivor_POC |> group_by(season) |> summarise(mean = mean(`Compound Score`), std = sd(`Compound Score`))
-White_mean_scores <- survivor_White |> group_by(season) |> summarise(mean = mean(`Compound Score`), std = sd(`Compound Score`))
-```
-
 ## Demographics of Study Population
-
-See @tbl-summary-stats
 
 ```{r}
 #| label: tbl-summary-stats
 #| tbl-cap: "Demographic Characteristics of the Players in the Study Population"
 #| echo: false
+#| fig-pos: 'H'
 df <- data.frame(Gender = "",
                          Male = "91 (49.46)",
                          Female = "93 (50.54)",
@@ -239,6 +228,10 @@ kbl(df_pivot_longer) |>
   row_spec(c(1, 4, 6, 11), bold = T) |>
   footnote(general = "* Mean age of players ± Std. Deviation, ** Race as provided by the Survivor Wiki")
 ```
+
+See @tbl-summary-stats
+
+\newpage
 \newpage
 
 ## Assumptions
@@ -250,19 +243,22 @@ Among our predictors, gender, POC status, season, and presence of diversity cast
 ```{r}
 #| label: label-3
 #| echo: false
+#| fig-pos: 'H'
 emplogitplot1(Attitude ~ age, data = survivor, ngroups = 10)
 ```
 
 However, an empirical logit plot of our only numerical predictor, age, shows violation of the linearity assumption as the estimated log odds follow a curved trend against age. This violation persisted after exploring several transformations of the age variable, thus we chose not to transform the variable to maintain model interpretability. 
 
+\newpage
+\newpage
+
 ## Regression Output
 
-See @tbl-regression-output
 ```{r}
 #| label: tbl-regression-output
 #| tbl-cap: "Regression Output of Model Considering Player POC Status, Age, Gender, Season, and Diversity Rules Effect on Log Odds of Initial, Portrayed Attitude of Player"
 #| echo: false
-
+#| fig-pos: 'H'
 survivor.model.tbl <- broom::tidy(survivor.model) 
 survivor.model.tbl <- as.data.frame(survivor.model.tbl)
 survivor.model.tbl <- survivor.model.tbl[c(1:13, 15), c(2:5)]
@@ -271,7 +267,42 @@ kable(survivor.model.tbl, digits = 2,
       col.names = c("Estimate", "Std. Error", "z-Statistic", "P-Value"))
 ```
 
+See @tbl-regression-output
+
+```{r}
+#| echo: false
+#| include: false
+# difference in odds for poc v. white players pre- diversity rules and 95% CI
+odds.poc.pre <- exp(coef(survivor.model)[2])
+100*odds.poc.pre - 100
+poc.pre.ci <- exp(coef(survivor.model)[2] + c(-1, 1)*qnorm(0.975)*sqrt(vcov(survivor.model)[2, 2]))
+poc.pre.ci[1]*100 - 100
+poc.pre.ci[2]*100 - 100
+# difference in odds for poc v. white players post- diversity rules and 95% CI
+odds.poc.post <- exp(coef(survivor.model)[2] + coef(survivor.model)[15])
+100*odds.poc.post - 100
+poc.post.ci <- exp((coef(survivor.model)[2] + coef(survivor.model)[15]) + c(-1, 1)*qnorm(0.975)*sqrt(vcov(survivor.model)[2, 2] + vcov(survivor.model)[15,15] + 2*vcov(survivor.model)[2,15]))
+poc.post.ci[1]*100 - 100
+poc.post.ci[2]*100 - 100
+```
+
+```{r}
+#| label: tbl-or-calculations
+#| tbl-cap: "Odds Ratio of Initial, Positive Portrayed Attitude for POC v. White Player with 95% Confidence Intervals"
+#| echo: false
+#| fig-pos: 'H'
+odds.ratios.df <- data.frame('Diversity Casting Rules Status*' = c('Pre','Post'), 
+                             'Odds Ratio [95% CI]*' = c("-37.65 [-76.59, 66.08]", "-11.26 [-70.37, 165.68]"))
+colnames(odds.ratios.df) <- c('Diversity Casting Rules Status', 'Odds Ratio [95% CI]*')
+kbl(odds.ratios.df) |>
+  kable_styling("striped", full_width = F) |> 
+  row_spec(0, bold = T, color = "white", background = "black")
+```
+
+@tbl-or-calculations displays the results of our calculations for the odds ratios pre- and post- diversity rules for POC v. White players having initial, positive portrayed attitudes 
+
 \newpage 
+\newpage
 
 ## Model Significance
 
@@ -297,21 +328,13 @@ We consider the numbered models for the ANOVA tests in this section:
 \begin{equation} Gender_i = \begin{cases} 1 & \text{ if } i \text{ person identifies as a man} \\ 0 & \text{ if } i \text{ person identifies as a woman} \end{cases} \end{equation}
 ```
 
-\newpage
 
-To assess the overall significance of our full model, we conducted a likelihood ratio test comparing Models (1) and (4) in @tbl-full-anova. 
-
-To assess the significance of age predictors in our model, we conducted a likelihood ratio test comparing Models (1) and (2) in @tbl-reduced-anova-age. 
-
-To assess the significance of gender predictor in our model, we conducted a likelihood ratio test comparing Models (1) and (3) in @tbl-reduced-anova-gender.
-
-\newpage
 ```{r}
 #| label: tbl-full-anova
 #| tbl-cap: "Likelihood Ratio Test Results for Full Model"
 #| echo: false
 #| warning: false
-
+#| fig-pos: 'H'
 survivor.null = glm(Attitude ~ 1, data = survivor, family = "binomial")
 full.test <- anova(survivor.null, survivor.model, test = "Chisq")
 full.test.df <- data.frame(Model = c("1","4"),
@@ -324,12 +347,15 @@ colnames(full.test.df) <- c("Model", "Residual Degrees of Freedom", "Residual De
 kbl(full.test.df) |>
   kable_styling(full_width = F)
 ```
+
+To assess the overall significance of our full model, we conducted a likelihood ratio test comparing Models (1) and (4) in @tbl-full-anova. 
+
 ```{r}
 #| label: tbl-reduced-anova-age
 #| tbl-cap: "Likelihood Ratio Test Results for Reduced Model with additional Age Predictor Only"
 #| echo: false
 #| warning: false
-
+#| fig-pos: 'H'
 survivor.minimal <- glm(Attitude ~ poc * div_rules + season, data = survivor, family = "binomial")
 
 survivor.age <- glm(Attitude ~ poc * div_rules + season + age_adj, data = survivor, family = "binomial")
@@ -346,12 +372,15 @@ colnames(minimal.age.test.df) <- c("Model", "Residual Degrees of Freedom", "Resi
 kbl(minimal.age.test.df) |>
   kable_styling(full_width = F)
 ```
+
+To assess the significance of age predictors in our model, we conducted a likelihood ratio test comparing Models (1) and (2) in @tbl-reduced-anova-age. 
+
 ```{r}
 #| label: tbl-reduced-anova-gender
 #| tbl-cap: "Likelihood Ratio Test Results for Reduced Model with additional Gender Predictor Only"
 #| echo: false
 #| warning: false
-
+#| fig-pos: 'H'
 survivor.minimal <- glm(Attitude ~ poc * div_rules + season, data = survivor, family = "binomial")
 
 survivor.gender <- glm(Attitude ~ poc * div_rules + season + gender, data = survivor, family = "binomial")
@@ -368,34 +397,14 @@ colnames(minimal.gender.test.df) <- c("Model", "Residual Degrees of Freedom", "R
 kbl(minimal.gender.test.df) |>
   kable_styling(full_width = F)
 ```
+
+To assess the significance of gender predictor in our model, we conducted a likelihood ratio test comparing Models (1) and (3) in @tbl-reduced-anova-gender.
+
+\newpage
+\newpage
 \newpage
 
-```{r}
-#| echo: false
-#| include: false
-# difference in odds for poc v. white players pre- diversity rules and 95% CI
-odds.poc.pre <- exp(coef(survivor.model)[2])
-100*odds.poc.pre - 100
-poc.pre.ci <- exp(coef(survivor.model)[2] + c(-1, 1)*qnorm(0.975)*sqrt(vcov(survivor.model)[2, 2]))
-poc.pre.ci[1]*100 - 100
-poc.pre.ci[2]*100 - 100
-# difference in odds for poc v. white players post- diversity rules and 95% CI
-odds.poc.post <- exp(coef(survivor.model)[2] + coef(survivor.model)[15])
-100*odds.poc.post - 100
-poc.post.ci <- exp((coef(survivor.model)[2] + coef(survivor.model)[15]) + c(-1, 1)*qnorm(0.975)*sqrt(vcov(survivor.model)[2, 2] + vcov(survivor.model)[15,15] + 2*vcov(survivor.model)[2,15]))
-poc.post.ci[1]*100 - 100
-poc.post.ci[2]*100 - 100
-```
-@tbl-or-calculations displays the results of our calculations for the odds ratios pre- and post- diversity rules for POC v. White players having initial, positive portrayed attitudes 
-```{r}
-#| label: tbl-or-calculations
-#| tbl-cap: "Odds Ratio of Initial, Positive Portrayed Attitude for POC v. White Player with 95% Confidence Intervals"
-#| echo: false
-odds.ratios.df <- data.frame('Diversity Casting Rules Status*' = c('Pre','Post'), 
-                             'Odds Ratio [95% CI]*' = c("-37.65 [-76.59, 66.08]", "-11.26 [-70.37, 165.68]"))
-colnames(odds.ratios.df) <- c('Diversity Casting Rules Status', 'Odds Ratio [95% CI]*')
-kbl(odds.ratios.df) |>
-  kable_styling("striped", full_width = F) |> 
-  row_spec(0, bold = T, color = "white", background = "black")
-```
+# References
 
+::: {#refs}
+:::
