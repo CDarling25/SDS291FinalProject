@@ -29,32 +29,32 @@ survivor$age_adj <- survivor$age - 18
 
 # Abstract
 
-The reality TV competition show Survivor has been on the air for over 20 years; however, it has faced significant criticism for its history of predominantly white casts. In the aftermath of the death of George Floyd and the broader Black Lives Matter movement, the cable network CBS announced that they had implemented a diversity ruling stating at least 50% of each season's cast must be players of color. The purpose of this analysis is to determine whether or not the diversity ruling has had any effect on each player's portrayed initial attitude towards the game by looking at the differences from players attitudes before and after the implementation of the ruling. We did so by completing a logistic regression analysis on data involving demographics of players (including age, gender, and POC status) and their first significant confessionals from seasons 36-45, wherein seasons 36-40 are before the diversity ruling and 41-45 are the seasons after. Ultimately, our study did not find a significant relationship between the implementation of the diversity casting rules and the odds that a player of color had an initially positive portrayed attitude. 
+The reality TV competition show Survivor has been on the air for over 20 years; however, it has faced significant criticism for its history of predominantly white casts. In the aftermath of the death of George Floyd and the broader Black Lives Matter movement, the cable network CBS announced that they had implemented a diversity ruling stating at least 50% of each season's cast must be players of color. The purpose of this analysis is to determine whether or not the diversity ruling has had any effect on each player's portrayed initial attitude towards the game by looking at the differences from players attitudes before and after the implementation of the ruling. We did so by completing a logistic regression analysis on data involving demographics of players (including age, gender, and POC status) and their first significant confessionals from seasons 36-45, wherein seasons 36-40 are before the diversity ruling and 41-45 are the seasons after. Ultimately, our study did not find a significant relationship between the implementation of the diversity casting rules and the odds that a player of color had an initially positive portrayed attitude.
 
 # Introduction
 
-Survivor is one of cable television’s longest-running reality competition shows. Advertised as a ‘microcosm for our real world’ by executive producer Jeff Probst [@wigler_survivor_2019], each season about 20 people are taken to an exotic location, given little supplies, and divided into tribes. They are then tasked with creating a new society amongst themselves while competing in physical and mental challenges, voting each other out along the way, with each player aiming to be the last person remaining to win one million dollars. 
+Survivor is one of cable television's longest-running reality competition shows. Advertised as a 'microcosm for our real world' by executive producer Jeff Probst [@wigler_survivor_2019], each season about 20 people are taken to an exotic location, given little supplies, and divided into tribes. They are then tasked with creating a new society amongst themselves while competing in physical and mental challenges, voting each other out along the way, with each player aiming to be the last person remaining to win one million dollars.
 
-Being a competition show focused heavily on the social interactions of its players, the topic of race and its impact on player experience and player outcomes has been discussed at length. Excluding Season 13, Cook’s Island, in which players were segregated by race as part of the season’s theme, Survivor’s season casts have been historically dominated by white players. This likely contributed to many players of color having negative experiences with their castmates going unaddressed, as detailed in an episode of Morning Edition by NPR [@deggans_right_2020], as well as a Zoom roundtable featuring several past black Survivor players. 
+Being a competition show focused heavily on the social interactions of its players, the topic of race and its impact on player experience and player outcomes has been discussed at length. Excluding Season 13, Cook's Island, in which players were segregated by race as part of the season's theme, Survivor's season casts have been historically dominated by white players. This likely contributed to many players of color having negative experiences with their castmates going unaddressed, as detailed in an episode of Morning Edition by NPR [@deggans_right_2020], as well as a Zoom roundtable featuring several past black Survivor players.
 
-In response to the broader cultural reaction to the George Floyd Protests, as well as a petition released on Juneteenth 2020 from some of Survivor’s past black players, CBS announced in November of 2020 that beginning in Season 41, 50% of the Survivor castaways would be POC. Diversity measures like CBS’ have been implemented in workplaces before, and have been shown to improve firm performance, team creativity, among other similar metrics in a wide variety of contexts [@gomez_diversity_2019; @kumar_impact_2023]. However, do these same benefits translate at a qualitative level in a reality television context? Our study aims to, in part, evaluate the efficacy of the 2020 Survivor diversity initiative on improving the portrayal of POC players themselves, by addressing the following questions: is there a relationship between whether or not a player had a positive, *portrayed* initial attitude towards the game and whether or not the player’s season occurred before or after the diversity casting rules were implemented? Do other social demographic factors, such as age and gender of a player, moderate this relationship, if it exists?
+In response to the broader cultural reaction to the George Floyd Protests, as well as a petition released on Juneteenth 2020 from some of Survivor's past black players, CBS announced in November of 2020 that beginning in Season 41, 50% of the Survivor castaways would be POC. Diversity measures like CBS' have been implemented in workplaces before, and have been shown to improve firm performance, team creativity, among other similar metrics in a wide variety of contexts [@gomez_diversity_2019; @kumar_impact_2023]. However, do these same benefits translate at a qualitative level in a reality television context? Our study aims to, in part, evaluate the efficacy of the 2020 Survivor diversity initiative on improving the portrayal of POC players themselves, by addressing the following questions: is there a relationship between whether or not a player had a positive, *portrayed* initial attitude towards the game and whether or not the player's season occurred before or after the diversity casting rules were implemented? Do other social demographic factors, such as age and gender of a player, moderate this relationship, if it exists?
 
 # Methods
 
 ## Data Source
 
-Our dataset combines existing data gathered by Survivor fans from the ‘castaway_details’ dataset from the survivoR R Package on GitHub with transcribed confessionals transcripts and sentiment analysis done by our team. The ‘castaway_details’ dataset contains details on a player’s gender, POC identity, date of birth, and other detailed demographic information which is not relevant to this study. Per the package author, this demographic information was collected from the Survivor Wiki, Wikipedia, and from individual package contributors.
+Our dataset combines existing data gathered by Survivor fans from the 'castaway_details' dataset from the survivoR R Package on GitHub [@levitz_survivor_nodate] with transcribed confessionals transcripts and sentiment analysis done by our team. The 'castaway_details' dataset contains details on a player's gender, POC identity, date of birth, and other detailed demographic information which is not relevant to this study. Per the package author, this demographic information was collected from the Survivor Wiki, Wikipedia, and from individual package contributors.
 
 ## Study Population
 
-Our team studied the 184 players’ confessionals from Season 36-45, the five seasons preceding (S36-40) and five seasons immediately following (S41-45) the diversity casting rules being put into effect. Looking at the first four episodes of each season, a player’s first confessional which matched the criteria outlined in Figure I was included in the dataset. Each confessional was then analyzed using the VADER sentiment analyzer (version 3.3.2) in Python and coded as positive (scores higher than 0) or negative (scores 0 and below) to measure a player’s portrayed initial attitude towards the game.
+Our team studied the 184 players' confessionals from Season 36-45, the five seasons preceding (S36-40) and five seasons immediately following (S41-45) the diversity casting rules being put into effect. Looking at the first four episodes of each season, a player's first confessional which matched the criteria outlined in Figure I was included in the dataset. Each confessional was then analyzed using the VADER sentiment analyzer (version 3.3.2) in Python and coded as positive (scores higher than 0) or negative (scores 0 and below) to measure a player's portrayed initial attitude towards the game.
 
-|       | **POC** | **White** |
-|--------------------------|---------|-----------|
+|                                   | **POC** | **White** |
+|-----------------------------------|---------|-----------|
 | **Pre-Diversity Rules (S36-40)**  | 32      | 64        |
 | **Post-Diversity Rules (S41-45)** | 52      | 36        |
 
-: POC Status of Study Population in Two Main Study Cohorts  
+: POC Status of Study Population in Two Main Study Cohorts
 
 ```{r}
 #| label: Data-Cleaning
@@ -75,10 +75,9 @@ survivor |> ggplot(aes(x = poc_category, y = `Compound Score`, color = poc_categ
   
 ```
 
-
 ## Operational Validity of First Confessionals
 
-We used a player’s first confessional which matched the criteria outlined in Figure I, which attempts to isolate confessionals relating to personal strategy, motivations, and relationships, to capture the first impression that viewers receive of the attitude of a player, which, regardless of the player’s overall season story arc, acts as a foundation with which the viewers contextualize the rest of the player’s game.  
+We used a player's first confessional which matched the criteria outlined in Figure I, which attempts to isolate confessionals relating to personal strategy, motivations, and relationships, to capture the first impression that viewers receive of the attitude of a player, which, regardless of the player's overall season story arc, acts as a foundation with which the viewers contextualize the rest of the player's game.
 
 ```{r, out.width = "450px"}
 #| label: consort-diagram
@@ -86,11 +85,12 @@ We used a player’s first confessional which matched the criteria outlined in F
 #| echo: false
 knitr::include_graphics("Flowchart.jpeg")
 ```
-Four players lacked confessionals which met the guidelines outlined in Figure I and were coded as negative by default, as our team took a lack of portrayal as having a negative impact on a player’s portrayal. 
+
+Four players lacked confessionals which met the guidelines outlined in Figure I and were coded as negative by default, as our team took a lack of portrayal as having a negative impact on a player's portrayal.
 
 ## Dataset
 
-The combined dataset includes information on the gender, age, race, name, and POC status of each player in addition to their confessional, sentiment analysis score, and portrayed initial attitude. @fig-3 is a visual representation of the portrayed attitudes of POC and non-POC players pre- and post- diversity rules. Visually, the stacked bar plots show an increase in the percentage of POC players in the casts post-diversity rules as expected. Of these POC players, the proportion whose initial, portrayed attitudes were analyzed as positive seems to have increased compared to before the diversity casting rules were implemented. However, this increase in positive portrayal also appears with white players post- diversity casting rules as well. This suggests that the diversity rules may have had no or very little of an effect on the nature in which POC players’ initial attitudes were portrayed. This difference, or lack thereof, will be explored more formally in our statistical analysis.
+The combined dataset includes information on the gender, age, race, name, and POC status of each player in addition to their confessional, sentiment analysis score, and portrayed initial attitude. @fig-3 is a visual representation of the portrayed attitudes of POC and non-POC players pre- and post- diversity rules. Visually, the stacked bar plots show an increase in the percentage of POC players in the casts post-diversity rules as expected. Of these POC players, the proportion whose initial, portrayed attitudes were analyzed as positive seems to have increased compared to before the diversity casting rules were implemented. However, this increase in positive portrayal also appears with white players post- diversity casting rules as well. This suggests that the diversity rules may have had no or very little of an effect on the nature in which POC players' initial attitudes were portrayed. This difference, or lack thereof, will be explored more formally in our statistical analysis.
 
 ```{r}
 #| label: fig-3
@@ -112,7 +112,7 @@ ggplot(data = survivor, aes(x = as.factor(poc), fill = as.factor(Attitude))) +
 
 ## Statistical Analysis and Model
 
-Using multiple logistic regression, our study will fit a model to the dataset to investigate the existence of a relationship between the log-likelihood of a portrayed positive initial attitude towards the game with the player’s status as a person of color, before the implementation of diversity casting rules (Seasons 36-40) and after the implementation of diversity casting rules (Seasons 41-45). Our study also will investigate whether this relationship is moderated by the accounting of other key factors of season of appearance, age, and gender. Selection of the demographic factors for our model is based upon the sizable interest and proclaimed importance to success in both the physical and social aspects of gameplay in the Survivor cultural sphere, as well as limitations on data availability and study timeline. 
+Using multiple logistic regression, our study will fit a model to the dataset to investigate the existence of a relationship between the log-likelihood of a portrayed positive initial attitude towards the game with the player's status as a person of color, before the implementation of diversity casting rules (Seasons 36-40) and after the implementation of diversity casting rules (Seasons 41-45). Our study also will investigate whether this relationship is moderated by the accounting of other key factors of season of appearance, age, and gender. Selection of the demographic factors for our model is based upon the sizable interest and proclaimed importance to success in both the physical and social aspects of gameplay in the Survivor cultural sphere, as well as limitations on data availability and study timeline.
 
 The empirical model used to examine the determinants of a player's initial, portrayed attitude is specified as:
 
@@ -121,7 +121,6 @@ $logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 
 ```{=tex}
 \begin{equation} Gender_i = \begin{cases} 1 & \text{ if } i \text{ person identifies as a man} \\ 0 & \text{ if } i \text{ person identifies as a woman} \end{cases} \end{equation}
 ```
-
 where `POC` indicates whether a player is a person of color, `Age` gives a player's age in years with 18 subtracted to account for the minimum age for players, `Gender` indicates whether a player is male or female, `Div_Rules` indicates the implementation of diversity casting rules on a season, `Season` gives the season number (seasons 37-44, with season 36 and season 45 left out due to singularities), and an interaction term to account for how the presence of the diversity casting rules affected the relationship between a player's POC status and their log odds of a positive, initial portrayed attitude.
 
 We hypothesize that after the implementation of diversity casting rules, the likelihood that a POC player had a positive portrayed initial attitude towards the game meaningfully increased, even after accounting for the age and gender of a player.
@@ -136,7 +135,7 @@ survivor.model <- glm(Attitude ~ poc * div_rules + age_adj + gender + season, da
 summary(survivor.model)
 ```
 
-The results of our logistic regression expressed in odds ratios for a one unit increase in the predictor are tabulated in @tbl-regression-output-odds-ratios. Logit estimates are presented in the [Appendix](#appendix) in @tbl-regression-output. Odds ratio estimates were converted from logit estimates by exponentiating the logit estimate. 
+The results of our logistic regression expressed in odds ratios are tabulated in @tbl-regression-output-odds-ratios. Logit estimates are presented in the [Appendix](#appendix) in @tbl-regression-output. Odds ratio estimates were converted from logit estimates by exponentiating the logit estimate.
 
 ```{r}
 #| label: tbl-regression-output-odds-ratios
@@ -155,41 +154,39 @@ kable(survivor.model.tbl, digits = 2,
 
 We find that for players of the same age and gender playing on the same season pre-diversity rule implementation, the predicted odds of a player's first significant confessional portraying a positive attitude are 34.6% lower for players of color than white players ($95\% \text{ CI}: 76.6\% \text{ lower}, 66.1\% \text{ higher}$). For players of the same age and gender playing on the same season post-diversity rule implementation, the predicted odds of a player's first significant confessional portraying a positive attitude are 11.3% lower for players of color than white players ($95\% \text{ CI}: 70.4\% \text{ lower}, 166\% \text{ higher}$). Calculations for these difference of odds are included in the [Appendix](#appendix). Comparing seasons pre- and post-diversity rule implementation, we find that the predicted odds ratio for POC versus White players becomes smaller after the diversity rules are implemented, suggesting that the diversity rules have a positive association with the odds that a player of color has a positive, initially portrayed attitude in their first significant confessional.
 
-All of the individual coefficients have p-values greater than the 95% confidence threshold of $p=0.05$. For our predictors of interest in relation to our initial hypotheses–the POC status of the player, the implementation of the diversity rules, as well as a player’s age and gender–this result indicates that none of these predictors when considered together along with our other predictors controlling for potential season editing clusters were associated with changes in the log odds of an initial, portrayed positive attitude for a player. Our interaction term's, `POC:Div_Rules`, coefficient, which measures how the implementation of the diversity casting rules effects the relationship of a player's POC status on their odds of having a initial, positive portrayed attitude, is 1.42, indicating that the implementation of the diversity casting rules was associated with a 1.42 times higher odds that a POC player would have a positive initial portrayed attitude.
+All of the individual coefficients have p-values greater than the 95% confidence threshold of $p=0.05$. For our predictors of interest in relation to our initial hypotheses--the POC status of the player, the implementation of the diversity rules, as well as a player's age and gender--this result indicates that none of these predictors when considered together along with our other predictors controlling for potential season editing clusters were associated with changes in the log odds of an initial, portrayed positive attitude for a player. Our interaction term's, `POC:Div_Rules`, coefficient, which measures how the implementation of the diversity casting rules effects the relationship of a player's POC status on their odds of having a initial, positive portrayed attitude, is 1.42, indicating that the implementation of the diversity casting rules was associated with a 1.42 times higher odds that a POC player would have a positive initial portrayed attitude.
 
 Supporting the results of our Wald tests on the individual coefficients, we also find using a likelihood ratio test that the overall model is not significant ($p=0.58$), and that an intercept-only model is sufficient to predict the log odds of an initial positive portrayed attitude of a player. Comparing preliminary models, one excluding age and one excluding the gender predictor, we also found that these two predictors did not meaningfully improve model fit to the data ($p = 0.7465; p = 0.3555$). Consequently, age and gender are also insignificant as individual predictors in our final model ($p = 0.7924; p = 0.3657$). See the [Appendix](#appendix) for full results of likelihood ratio tests comparing our reduced and full models with varying combinations of predictors.
 
-
 # Discussion
 
-Following the cultural reckoning caused by the broad social movement associated with the George Floyd Protests of 2020, many workplaces and businesses responded by implementing diversity, equity, and inclusion (DEI) initiatives. Evaluating the efficacy of these DEI initiatives is an important task and challenge for organizations as they seek to improve workplace equity in the future. 
+Following the cultural reckoning caused by the broad social movement associated with the George Floyd Protests of 2020, many workplaces and businesses responded by implementing diversity, equity, and inclusion (DEI) initiatives. Evaluating the efficacy of these DEI initiatives is an important task and challenge for organizations as they seek to improve workplace equity in the future.
 
-Previous research has shown the importance of diverse racial representation in fiction-based media on people’s identity development [@ellithorpe_wanting_2016], response to advertising, and identity gratification. The present study extends upon this work by attempting to discern the effects of diverse racial representation on the portrayal of reality competition show players of color from a media consumer perspective. 
+Previous research has shown the importance of diverse racial representation in fiction-based media on people's identity development [@ellithorpe_wanting_2016], response to advertising, and identity gratification. The present study extends upon this work by attempting to discern the effects of diverse racial representation on the portrayal of reality competition show players of color from a media consumer perspective.
 
-In concurrence with the findings of related literature of the positive effects of DEI initiatives on people of color in workplace contexts [@waight_diversity_2011], our study found that after the diversity casting rules were implemented, the  difference in the odds of a player of color having an initial positive, portrayed attitude compared to a white player had decreased. This decrease in the difference in odds suggests that increasing the percentage of players of color on a season of Survivor was associated with an increased likelihood that a player of color would be initially, positively portrayed. 
+In concurrence with the findings of related literature of the positive effects of DEI initiatives on people of color in workplace contexts [@waight_diversity_2011], our study found that after the diversity casting rules were implemented, the difference in the odds of a player of color having an initial positive, portrayed attitude compared to a white player had decreased. This decrease in the difference in odds suggests that increasing the percentage of players of color on a season of Survivor was associated with an increased likelihood that a player of color would be initially, positively portrayed.
 
 This association may be due to a variety of interacting components, such as a change in editing and story arc strategies or a change in mindset of the players of color themselves. This association may also have implications for Survivor studio efforts to increase Survivor viewership, as previous studies have shown that people tend to seek out media that strengthens their in-group identifications and the positivity they associate with it at increased rates [@harwood_age_1999].
 
-Our study’s finding of the positive association between age and the odds of a player having an initial positive, portrayed attitude disagrees with some researchers who have found negative relationships between age and job well-being [@wilks_workplace_2013]. Our study’s finding of the positive association between being male and the odds of a player having an initial positive, portrayed attitude also disagrees with many researchers who, to their surprise, have found no differences in overall, or even increased job satisfaction in women compared to men. Discerning the mechanisms which drive job satisfaction, as well as many other work-related items, is ongoing. Our study speaks to the mechanisms at play in reality competition shows, which likely meaningfully differ from those relevant in the typical workplace due to the idiosyncratic performance demands and social dynamics in a specific reality competition show environment.
-
+Our study's finding of the positive association between age and the odds of a player having an initial positive, portrayed attitude disagrees with some researchers who have found negative relationships between age and job well-being [@wilks_workplace_2013]. Our study's finding of the positive association between being male and the odds of a player having an initial positive, portrayed attitude also disagrees with many researchers who, to their surprise, have found no differences in overall, or even increased job satisfaction in women compared to men. Discerning the mechanisms which drive job satisfaction, as well as many other work-related items, is ongoing. Our study speaks to the mechanisms at play in reality competition shows, which likely meaningfully differ from those relevant in the typical workplace due to the idiosyncratic performance demands and social dynamics in a specific reality competition show environment.
 
 # Limitations and Further Research
 
-Accurate regression analyses relies on, first and foremost, accurate data with which to fit a model to. Primary-source data-gathering from the CBS network as well as the players themselves, as opposed to collaborative, second-hand citizen-science efforts which constructed our study’s dataset, in the future will be crucial to evaluating the effect of diversity casting rules on the initial portrayals of the players of color of Survivor. 
+Accurate regression analyses relies on, first and foremost, accurate data with which to fit a model to. Primary-source data-gathering from the CBS network as well as the players themselves, as opposed to collaborative, second-hand citizen-science efforts which constructed our study's dataset, in the future will be crucial to evaluating the effect of diversity casting rules on the initial portrayals of the players of color of Survivor.
 
 Our investigation may also have benefitted from a larger sample size; our present samples were limited to 17-20 players with significant confessionals for each of the 10 seasons included. As additional seasons of Survivor with diversity casting rules in place are produced, the scope of future research models may expand to include additional seasons before and after the updated casting rules took effect. Our study also chose to exclude the singular nonbinary player due to lack of data on those of their gender. A larger sample size may also introduce a sufficient number of nonbinary players such that this population could be represented in analyses. Overall, additional observations will increase the statistical power of our study, decreasing the error associated with our model predictors which increases the chance we detect the effect of the casting rules if it exists, perhaps yielding significant model predictors, which we did not have in our study.
- 	
-Additionally, there may be more valid methods to evaluate the portrayed attitude of a player. Confessionals alone may not be fully indicative of a players’ portrayed attitudes, as conversations with other players often capture attitude as well. However, these conversations may have compromised the independence of observations as players adjust their game strategies when intercating with one another. Our team’s use of the VADER sentiment analyzer to construct the attitudes of the confessionals in our dataset may also pose limitations as this tool itself relies on a model, introducing error into the process of polarity classification for confessionals. Alternative methods of sentiment analysis using recurrent neural networks or machine learning algorithms may be more accurate at capturing the true sentiment of player confessionals to measure player portrayal. Even better at measuring the player portrayal would be sufficiently large, randomly-sampled viewer surveys about the perception of the different players, which could be aggregated and averaged to generate a numerical summary of how each player’s initial attitude was portrayed. 
- 	
+
+Additionally, there may be more valid methods to evaluate the portrayed attitude of a player. Confessionals alone may not be fully indicative of a players' portrayed attitudes, as conversations with other players often capture attitude as well. However, these conversations may have compromised the independence of observations as players adjust their game strategies when intercating with one another. Our team's use of the VADER sentiment analyzer to construct the attitudes of the confessionals in our dataset may also pose limitations as this tool itself relies on a model, introducing error into the process of polarity classification for confessionals. Alternative methods of sentiment analysis using recurrent neural networks or machine learning algorithms may be more accurate at capturing the true sentiment of player confessionals to measure player portrayal. Even better at measuring the player portrayal would be sufficiently large, randomly-sampled viewer surveys about the perception of the different players, which could be aggregated and averaged to generate a numerical summary of how each player's initial attitude was portrayed.
+
 Logistic regression analysis may not be best-suited for analyzing our dataset. As can be explored further in the Appendix, all assumptions of regression were not met despite various transformations to the relevant variables (notably `Age`), indicating more advanced regression techniques may be appropriate for future research.
 
 # Conclusion
 
-Overall, we consider our study to be a preliminary investigation into one aspect in the holistic assessment of the efficacy of CBS’ diversity casting rules in Survivor. Our study found a positive association between the implementation of diversity casting rules on the odds that a player of color would have an initial, positive portrayed attitude, even after accounting for the player’s age and gender. Crucial to note, our study did not find that this association was significant; thus, while our findings do not rule out the existence of an effect of the diversity casting rules on the odds that a player of color would have an initial, positive portrayed attitude, it does not confirm that one exists, either. We emphasize that our study be taken as preliminary, and highly recommend that further research on this matter be conducted on this facet and well as other facets of the diversity casting rules using sufficiently large sample-sizes, primary source data, and sufficient context-specificity as per our aforementioned recommendations before conclusions are made as to the efficacy CBS’ diversity casting rules on players of color’ initial portrayals and other relevant metrics.
+Overall, we consider our study to be a preliminary investigation into one aspect in the holistic assessment of the efficacy of CBS' diversity casting rules in Survivor. Our study found a positive association between the implementation of diversity casting rules on the odds that a player of color would have an initial, positive portrayed attitude, even after accounting for the player's age and gender. Crucial to note, our study did not find that this association was significant; thus, while our findings do not rule out the existence of an effect of the diversity casting rules on the odds that a player of color would have an initial, positive portrayed attitude, it does not confirm that one exists, either. We emphasize that our study be taken as preliminary, and highly recommend that further research on this matter be conducted on this facet and well as other facets of the diversity casting rules using sufficiently large sample-sizes, primary source data, and sufficient context-specificity as per our aforementioned recommendations before conclusions are made as to the efficacy CBS' diversity casting rules on players of color' initial portrayals and other relevant metrics.
 
 \newpage
 
-# Appendix
+# Appendix {#appendix}
 
 ## Demographics of Study Population
 
@@ -246,7 +243,7 @@ Among our predictors, gender, POC status, season, and presence of diversity cast
 emplogitplot1(Attitude ~ age, data = survivor, ngroups = 10)
 ```
 
-However, an empirical logit plot of our only numerical predictor, age, shows violation of the linearity assumption as the estimated log odds follow a curved trend against age. This violation persisted after exploring several transformations of the age variable, thus we chose not to transform the variable to maintain model interpretability. 
+However, an empirical logit plot of our only numerical predictor, age, shows violation of the linearity assumption as the estimated log odds follow a curved trend against age. This violation persisted after exploring several transformations of the age variable, thus we chose not to transform the variable to maintain model interpretability.
 
 \newpage
 
@@ -285,7 +282,7 @@ poc.post.ci[1]*100 - 100
 poc.post.ci[2]*100 - 100
 ```
 
-@tbl-or-calculations displays the results of our calculations for the odds ratios pre- and post- diversity rules for POC v. White players having initial, positive portrayed attitudes 
+@tbl-or-calculations displays the results of our calculations for the odds ratios pre- and post- diversity rules for POC v. White players having initial, positive portrayed attitudes
 
 ```{r}
 #| label: tbl-or-calculations
@@ -313,20 +310,17 @@ We consider the numbered models for the ANOVA tests in this section:
 ```{=tex}
 \begin{equation} Gender_i = \begin{cases} 1 & \text{ if } i \text{ person identifies as a man} \\ 0 & \text{ if } i \text{ person identifies as a woman} \end{cases} \end{equation}
 ```
-
 (3) $logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + \beta_2Div\_Rules_i+ \beta_4Gender_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i; \beta_3 = 0$
 
 ```{=tex}
 \begin{equation} Gender_i = \begin{cases} 1 & \text{ if } i \text{ person identifies as a man} \\ 0 & \text{ if } i \text{ person identifies as a woman} \end{cases} \end{equation}
 ```
-
 (4) $logit \{P(Attitude_i=1|POC_i,Div\_Rules_i,Age_i,Gender_i,Season_i)\} = \beta_0 + \beta_1POC_i + \beta_2Div\_Rules_i + \beta_3Age_i+ \beta_4Gender_i + \beta_{5-13}Season_i + \beta_{14}POC_i*Div\_Rules_i$
 
 ```{=tex}
 \begin{equation} Gender_i = \begin{cases} 1 & \text{ if } i \text{ person identifies as a man} \\ 0 & \text{ if } i \text{ person identifies as a woman} \end{cases} \end{equation}
 ```
-
-To assess the overall significance of our full model, we conducted a likelihood ratio test comparing Models (1) and (4) in @tbl-full-anova. 
+To assess the overall significance of our full model, we conducted a likelihood ratio test comparing Models (1) and (4) in @tbl-full-anova.
 
 ```{r}
 #| label: tbl-full-anova
@@ -347,7 +341,7 @@ kbl(full.test.df, position = "h!") |>
   kable_styling(full_width = F, latex_options = "HOLD_position")
 ```
 
-To assess the significance of age predictors in our model, we conducted a likelihood ratio test comparing Models (1) and (2) in @tbl-reduced-anova-age. 
+To assess the significance of age predictors in our model, we conducted a likelihood ratio test comparing Models (1) and (2) in @tbl-reduced-anova-age.
 
 ```{r}
 #| label: tbl-reduced-anova-age
